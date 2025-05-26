@@ -1,0 +1,37 @@
+from asamblea.models import Militante
+from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+
+
+m = Militante.objects.all()
+u = User.objects.all()
+
+print(m)
+u = User.objects.get(username="fsmith")
+
+print(m)
+
+m = Militante.objects.create(username='1049629006',email='usuario@gmail.com')
+c = User.objects.create(username='1049629006',email='usuario@gmail.com')
+
+
+-- xCREAR usaurio
+from asamblea.models import Militante
+user = Militante.objects.create_user(    username='1049629',    email='usuario2@example.com',    password='contraseña_segura')
+print(f'Usuario creado: {user.username} - {user.email}')
+
+
+## enviar correo
+
+python manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.get(username="test2")
+usuario
+enviar_email_activacion(usuario)
+
+
+usuario = Militante.objects.create_user(username="testuser", email="test@example.com", password="123456")
+enviar_email_activacion(usuario)

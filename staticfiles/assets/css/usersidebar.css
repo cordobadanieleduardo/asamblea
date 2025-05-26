@@ -1,0 +1,115 @@
+/* Reset básico y estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* O la fuente que prefieras */
+    display: flex; /* Para layout sidebar + contenido */
+}
+
+/* Estilos del Sidebar */
+.sidebar {
+    width: 280px; /* Ancho del menú */
+    height: 100vh; /* Altura completa de la ventana */
+    background: linear-gradient(to bottom right, #2a5a0a, #1a3a0a); /* Gradiente verde oscuro similar */
+    color: #ffffff; /* Color de texto principal (blanco) */
+    display: flex;
+    flex-direction: column; /* Organiza los elementos verticalmente */
+    padding: 25px 20px; /* Espaciado interno */
+    position: fixed; /* Fija el menú */
+    left: 0;
+        top: 0;
+}
+
+/* Cabecera del Sidebar (Logo) */
+.sidebar-header {
+    text-align: center; /* Centra el logo */
+    margin-bottom: 30px; /* Espacio debajo del logo */
+}
+
+.logo {
+    max-width: 180px; /* Tamaño máximo del logo */
+    height: auto;
+}
+
+/* Perfil de Usuario */
+.user-profile {
+    text-align: center; /* Centra imagen y nombre */
+    margin-bottom: 40px; /* Espacio debajo del perfil */
+}
+
+.profile-pic {
+    width: 120px; /* Tamaño de la foto de perfil */
+    height: 120px;
+    border-radius: 50%; /* Hace la imagen circular */
+    object-fit: cover; /* Asegura que la imagen cubra sin distorsionarse */
+    /* La imagen original parece tener un fondo blanco dentro del círculo.
+       Esto usualmente se logra con la imagen misma o con un div contenedor extra.
+       Asumimos que tu imagen 'profile-daniel-toro.jpg' ya tiene este efecto. */
+    margin-bottom: 15px; /* Espacio entre foto y nombre */
+        border: 3px solid white; /* Añade borde blanco si es necesario */
+}
+
+.user-name {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+/* Opciones del Menú */
+.menu-options {
+    list-style: none; /* Quita los puntos de la lista */
+    flex-grow: 1; /* Hace que esta sección ocupe el espacio disponible, empujando el footer hacia abajo */
+}
+
+.menu-item {
+    display: flex; /* Alinea icono y texto horizontalmente */
+    align-items: center; /* Centra verticalmente icono y texto */
+    padding: 12px 10px; /* Espaciado interno de cada item */
+    margin-bottom: 8px; /* Espacio entre items */
+    cursor: pointer;
+    border-radius: 5px; /* Bordes redondeados suaves */
+    transition: background-color 0.2s ease-in-out; /* Transición suave para hover */
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo sutil al pasar el mouse */
+}
+
+.menu-icon {
+    width: 24px; /* Tamaño de los iconos */
+    height: 24px;
+    margin-right: 15px; /* Espacio entre icono y texto */
+    /* Si tus iconos son negros y necesitas que sean blancos: */
+    /* filter: invert(1) brightness(2); */
+    opacity: 0.9;
+}
+
+.menu-text {
+    font-size: 1em;
+}
+
+/* Pie del Sidebar (Logout) */
+.sidebar-footer {
+    margin-top: auto; /* Empuja hacia abajo si flex-grow no está en .menu-options */
+    padding-top: 20px; /* Espacio antes del logout */
+    /* border-top: 1px solid rgba(255, 255, 255, 0.2); Opcional: línea separadora */
+}
+
+/* Ajustes específicos para el icono de logout si es necesario */
+.logout-icon {
+   /* Puedes añadir estilos específicos si este icono es diferente */
+}
+
+.logout-text {
+   /* Puedes añadir estilos específicos si este texto es diferente */
+}
+
+/* Estilos para el contenido principal (opcional, para layout) */
+.content {
+    margin-left: 280px; /* Deja espacio para el sidebar fijo */
+    padding: 20px;
+    width: calc(100% - 280px); /* Ocupa el resto del ancho */
+}

@@ -1,0 +1,50 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Confirmacion de Correo {% endblock %}
+{% block stylesheets %}{% endblock stylesheets %}
+{% load account %}
+{% block content %}
+
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card-group d-block d-md-flex row">
+          <div class="card col-md-7 p-4 mb-0">
+            <div class="card-body">
+              <a href="#"><img src="/static/assets/brand/emailconfirm.jpg" width="100%"></a>
+
+              {% if confirmation %}
+
+              {% user_display confirmation.email_address.user as user_display %}
+
+              <p><br>
+                Por favor confirme que <a href="mailto:{{ confirmation.email_address.email  }}">{{
+                  confirmation.email_address.email }}</a> es el correo perteneciente al usuario con documento de
+                identidad {{ user_display }}.</p>
+
+              <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                {% csrf_token %}
+                <button type="submit">Confirmar</button>
+              </form>
+
+              {% else %}
+
+              {% url 'account_email' as email_url %}
+
+              <p>Este enlace de confirmación de correo electrónico caducó o no es válido. Por favor envíe una nueva
+                solicitud de confirmación de correo electrónico. <a href="{{ email_url }}"></a></p>
+
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
