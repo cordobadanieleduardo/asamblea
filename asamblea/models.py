@@ -11,12 +11,12 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 
-class UserProfile(models.Model):
-    bio = models.TextField(blank=True)
-    # avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+# class UserProfile(models.Model):
+#     bio = models.TextField(blank=True)
+#     # avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
-    def __str__(self):
-        return f"Profile of user {self.id}"
+#     def __str__(self):
+#         return f"Profile of user {self.id}"
 
 
 class Militante(AbstractUser):

@@ -39,10 +39,10 @@ class UserView(SinPrivilegios, generic.ListView):
 def enviar_email_activacion(usuario):
     token = default_token_generator.make_token(usuario)
     uid = urlsafe_base64_encode(force_bytes(usuario.pk))
-    url_activacion = f"http://127.0.0.1:8000{reverse('asamblea:activar_cuenta', kwargs={'uidb64': uid, 'token': token})}"
+    activate_url = f"http://127.0.0.1:8000{reverse('asamblea:activar_cuenta', kwargs={'uidb64': uid, 'token': token})}"
     user_display = usuario.email
 
-    mensaje = f"Hola {usuario.get_short_name}, activa tu cuenta haciendo clic en el siguiente enlace: {url_activacion}"
+    mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
 
     # send_mail(
     #     'Activa tu cuenta',
@@ -54,12 +54,28 @@ def enviar_email_activacion(usuario):
 
     from_email_user = settings.EMAIL_HOST_USER
     to_email = usuario.email
-    context = {user_display, url_activacion }
+    ##context = {user_display, url_activacion }
+    context={'user_display': user_display, 'activate_url': activate_url}
     html_body = render_to_string('usuarios/email_confirmation_message.html', context)
     email_subject = '¡Tu solicitud debe ser activada con tú correo!'
     email = EmailMultiAlternatives(email_subject, html_body, from_email_user, [to_email])
     email.content_subtype = "html"  # Agregar esta línea para que el contenido sea HTML
     email.send()
+
+    # contexto = {'user_display': usuario, 'activate_url': url_activacion}
+    # html_content = render_to_string('usuarios/email_confirmation_message.html', contexto)
+    # text_content = f"Hola {usuario.username}, activa tu cuenta en el siguiente enlace: {url_activacion}"
+
+    # email = EmailMultiAlternatives(
+    #     subject="Activa tu cuenta",
+    #     body=text_content,
+    #     from_email=settings.EMAIL_HOST_USER,
+    #     to=[usuario.email]
+    # )
+    # email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
+    # email.send()
+
+    print("Correo de activación enviado.")
 
 
 
@@ -76,20 +92,13 @@ def activar_cuenta(request, uidb64, token):
         usuario.save()
         login(request, usuario)
         mensaje = f"Hola {usuario.get_short_name}, su cuenta está activa"
-
-
         context = {'segment': 'index', 'usuario': usuario, 'mensaje': mensaje, }
-
-        html_template = loader.get_template('usuarios/solicitud_militancia.html')
+        html_template = loader.get_template('usuarios/email_militancia.html')
         return HttpResponse(html_template.render(context, request))
-
-       ## return redirect('home')  # Redirigir a la página principal
     else:
-
-        print("error")
-       
-
-        ## return redirect('error')  # Redirigir en caso de error
+        context = {}
+        html_template = loader.get_template('usuarios/email_confirm.html')
+        return HttpResponse(html_template.render(context, request))
 
 # class CategoriaNew(SuccessMessageMixin,SinPrivilegios,\
 #     generic.CreateView):
