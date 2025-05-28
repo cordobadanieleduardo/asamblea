@@ -28,7 +28,7 @@ python manage.py shell
 
 from asamblea.models import Militante
 from asamblea.views import enviar_email_activacion
-usuario = Militante.objects.get(username="test2")
+usuario = Militante.objects.get(username="1049629006")
 usuario
 enviar_email_activacion(usuario)
 
@@ -59,3 +59,10 @@ pg_dump -U partidoverdeorg_siravusr -h 127.0.0.1 -p 5432 -F c -b -v -f /home/bac
 Para restaurar la base de datos desde el archivo .backup:
 
 pg_restore -U usuario -h 127.0.0.1 -p 5432 -d partidoverdeorg_sirav "C:\Users\ADMIN_PAV\Desktop\home\backup_sirav27052025.sql"
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1049629006", email="1049629006@example.com", password="123456")
+usuario = Militante.objects.get(username="1049629006")
+usuario
+enviar_email_activacion(usuario)
