@@ -24,6 +24,8 @@ class Militante(AbstractUser):
     email = models.EmailField(max_length=150,unique=True)
 
     class Meta:
+        verbose_name_plural = "Militantes"
+        verbose_name="Militante"
         constraints = [
             models.UniqueConstraint(fields=['username', 'email'], name='unique_username_email')
         ]

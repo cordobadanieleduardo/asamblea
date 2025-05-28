@@ -12,8 +12,8 @@ u = User.objects.get(username="fsmith")
 
 print(m)
 
-m = Militante.objects.create(username='1049629006',email='usuario@gmail.com')
-c = User.objects.create(username='1049629006',email='usuario@gmail.com')
+m = Militante.objects.create(username='1049629006',email='desarrollotecnologico@partidoverde.org.co', is_active= False)
+c = User.objects.create(username='1049629006',email='usuario@gmail.com'), is_active= False
 
 
 -- xCREAR usaurio
@@ -33,5 +33,29 @@ usuario
 enviar_email_activacion(usuario)
 
 
-usuario = Militante.objects.create_user(username="testuser", email="test@example.com", password="123456")
+usuario = Militante.objects.create_user(username="testuser", email="@example.com", password="123456")
 enviar_email_activacion(usuario)
+
+
+
+
+psql -h 127.0.0.1 -p 5432 -U partidoverdeorg_siravusr -d partidoverdeorg_sirav
+wmxt6jQA8Lx$
+
+Listar todas las tablas en la base de datos actual
+
+\dt
+
+Si quieres ver más detalles sobre las tablas, usa:
+
+\dt+
+
+
+pg_dump -U partidoverdeorg_siravusr -h 127.0.0.1 -p 5432 -F c -b -v -f /home/backup_sirav27052025.sql partidoverdeorg_sirav
+
+
+
+ 3. Restaurar el backup
+Para restaurar la base de datos desde el archivo .backup:
+
+pg_restore -U usuario -h 127.0.0.1 -p 5432 -d partidoverdeorg_sirav "C:\Users\ADMIN_PAV\Desktop\home\backup_sirav27052025.sql"
