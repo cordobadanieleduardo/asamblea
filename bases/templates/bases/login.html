@@ -41,10 +41,10 @@
                   <form class="user" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="id_username" name="username" aria-describedby="emailHelp" placeholder="Usuario">
+                      <input type="text" pattern="\d*" inputmode="numeric" maxlength="12" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-user" id="id_username" name="username" aria-describedby="emailHelp" placeholder="Número de Cédula">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="id_password" name="password" placeholder="Password">
+                      <input type="password" class="form-control form-control-user" id="id_password" name="password" placeholder="Contraseña">
                     </div>
                     <button type="submit" class="btn btn-primary btn-user btn-block">Acceder</button>
                 </div>
@@ -77,5 +77,12 @@
           {% endfor %}
       {% endif %}
   {% endif %}
+
+
+  document.getElementById('numeric-input').addEventListener('keypress', function(event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault();
+      }
+  });
 </script>
 {% endblock %}

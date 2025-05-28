@@ -28,10 +28,15 @@ python manage.py shell
 
 from asamblea.models import Militante
 from asamblea.views import enviar_email_activacion
-usuario = Militante.objects.get(username="test2")
+usuario = Militante.objects.get(username="1049629006")
 usuario
 enviar_email_activacion(usuario)
 
 
-usuario = Militante.objects.create_user(username="testuser", email="test@example.com", password="123456")
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1049629006", email="1049629006@example.com", password="123456")
+usuario = Militante.objects.get(username="1049629006")
+usuario
 enviar_email_activacion(usuario)
