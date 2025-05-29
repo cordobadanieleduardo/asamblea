@@ -164,3 +164,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'soporte@partidoverde.org.co'
 EMAIL_HOST_PASSWORD = 'pnqumvlbrvhmdubu'  # Usa variables de entorno para mayor seguridad
 DEFAULT_FROM_EMAIL = 'Asamblea <soporte@partidoverde.org.co>'
+
+
+DOMINIO = '127.0.0.1:9000'

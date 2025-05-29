@@ -1,3 +1,5 @@
+import sys
+
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
@@ -16,6 +18,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
+
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+
 
 from django.template import loader
 
@@ -39,10 +46,13 @@ class UserView(SinPrivilegios, generic.ListView):
 def enviar_email_activacion(usuario):
     token = default_token_generator.make_token(usuario)
     uid = urlsafe_base64_encode(force_bytes(usuario.pk))
-    activate_url = f"http://127.0.0.1:8000{reverse('asamblea:activar_cuenta', kwargs={'uidb64': uid, 'token': token})}"
+    
+    hosts = settings.DOMINIO
+    
+    activate_url = f"http://{hosts}{reverse('asamblea:activar_cuenta', kwargs={'uidb64': uid, 'token': token})}"
     user_display = usuario.email
 
-    mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
+    # mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
 
     # send_mail(
     #     'Activa tu cuenta',
@@ -77,28 +87,76 @@ def enviar_email_activacion(usuario):
 
     print("Correo de activación enviado.")
 
-
+def password_change(request):
+    # if request.user.is_authenticated:
+    print(request.user)
+    if request.user.must_change_password:
+        return redirect('password_change_first_login')
+    return redirect('bases:home')
 
 
 def activar_cuenta(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-        usuario = get_object_or_404(Militante, pk=uid)
+        user = get_object_or_404(Militante, pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        usuario = None
+        user = None
 
-    if usuario is not None and default_token_generator.check_token(usuario, token):
-        usuario.is_active = True
-        usuario.save()
-        login(request, usuario)
-        mensaje = f"Hola {usuario.get_short_name}, su cuenta está activa"
-        context = {'segment': 'index', 'usuario': usuario, 'mensaje': mensaje, }
+    if user is not None and default_token_generator.check_token(user, token):
+        # if usuario.must_change_password:
+        #     # login(request, usuario)    
+        #     # return redirect('asamblea:password_change_first_login')
+        #     return redirect('asamblea:password_change_first_login')
+        # Activar flag en el perfil
+        user.is_active = True
+        user.must_change_password = True
+        user.save()
+        
+        
+        # Loguear automáticamente al usuario
+        #login(request, usuario)        
+        
+        mensaje = f"Hola {user.get_short_name}, su cuenta está activa"
+        context = {'segment': 'index', 'usuario': user, 'mensaje': mensaje, }
         html_template = loader.get_template('usuarios/email_militancia.html')
         return HttpResponse(html_template.render(context, request))
+        
+        # return redirect('bases:login')    
     else:
-        context = {}
         html_template = loader.get_template('usuarios/email_confirm.html')
-        return HttpResponse(html_template.render(context, request))
+        return HttpResponse(html_template.render(request))
+    
+class CustomLoginView(LoginView):
+    def get_success_url(self):
+        user = self.request.user
+        # if hasattr(user, 'profile') and user.must_change_password:
+        if user.is_authenticated:
+            return reverse_lazy('home')
+        if user.must_change_password:
+            return reverse_lazy('asablea:password_change_first_login')
+        return reverse_lazy('home')
+
+
+class FirstLoginPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'registration/password_change_first_login.html'
+    success_url = reverse_lazy('bases:home')  
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Opcional: marcar algo en el perfil del usuario si es su primer login
+        # Desactivar la bandera
+        user = self.request.user
+        user.must_change_password = False
+        user.is_active = True
+        user.save()
+        return response
+
+
+
+
+
+
+
 
 # class CategoriaNew(SuccessMessageMixin,SinPrivilegios,\
 #     generic.CreateView):

@@ -22,6 +22,7 @@ from django.core.exceptions import ValidationError
 class Militante(AbstractUser):
     username = models.CharField(max_length=12,unique=True)
     email = models.EmailField(max_length=150,unique=True)
+    must_change_password = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Militantes"
