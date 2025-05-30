@@ -167,3 +167,8 @@ DEFAULT_FROM_EMAIL = 'Asamblea <soporte@partidoverde.org.co>'
 
 
 DOMINIO = '127.0.0.1:9000'
+
+# configuración para archivos multimedia
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
