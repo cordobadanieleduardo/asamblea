@@ -2,20 +2,21 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Militante #, UserProfile
+from .models import Militante, Plancha #, Candidato
 
 # Register your models here.
 
 
 class CustomUserAdmin(BaseUserAdmin):
     model = Militante
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')  # Campos visibles en el listado
+    list_display = ('username', 'email', 'first_name', 'last_name','plancha' ,'is_staff', 'is_active')  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name')  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
-    list_filter = ('is_staff', 'is_active')  # Filtros en la barra lateral
+    list_filter = ('is_staff', 'is_active','plancha')  # Filtros en la barra lateral
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
+        ('Placha', {'fields': ('plancha',)}),
         ('Información Personal', {'fields': ('first_name', 'last_name')}),
         ('Permisos', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
     )
@@ -23,10 +24,25 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active')}
+            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active','´plancha')}
         ),
     )
 
+
+class PlanchaAdmin(admin.ModelAdmin):
+    readonly_fields = ('fc', 'fm')
+    
+
+
+# class CandidatoAdmin(admin.ModelAdmin):
+#     readonly_fields = ('fc', 'fm')
+#     list_display = ('name', 'plancha')
+
+
+
+
+admin.site.register(Plancha, PlanchaAdmin)
+# admin.site.register(Candidato, CandidatoAdmin)
 admin.site.register(Militante, CustomUserAdmin)
 
 
