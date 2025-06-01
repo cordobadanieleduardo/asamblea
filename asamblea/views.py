@@ -25,7 +25,7 @@ from django.contrib.auth.views import LoginView
 
 
 from django.template import loader
-
+import csv
 
 from .models import Militante
 from .forms import *
@@ -54,13 +54,13 @@ def enviar_email_activacion(usuario):
 
     # mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
 
-    send_mail(
-        'Activa tu cuenta',
-        mensaje,
-        'desarrollotecnologico@partidoverde.org.co',  # Remitente
-        [usuario.email],  # Destinatario
-        fail_silently=False,
-    )
+    # send_mail(
+    #     'Activa tu cuenta',
+    #     mensaje,
+    #     'desarrollotecnologico@partidoverde.org.co',  # Remitente
+    #     [usuario.email],  # Destinatario
+    #     fail_silently=False,
+    # )
 
     # from_email_user = settings.EMAIL_HOST_USER
     # to_email = usuario.email
@@ -123,7 +123,7 @@ def activar_cuenta(request, uidb64, token):
         # return redirect('bases:login')    
     else:
         html_template = loader.get_template('usuarios/email_confirm.html')
-        return HttpResponse(html_template.render(request))
+        return HttpResponse(html_template.render({},request))
     
 class CustomLoginView(LoginView):
     def get_success_url(self):
@@ -132,7 +132,7 @@ class CustomLoginView(LoginView):
         if user.is_authenticated:
             return reverse_lazy('home')
         if user.must_change_password:
-            return reverse_lazy('asablea:password_change_first_login')
+            return reverse_lazy('asamblea:password_change_first_login')
         return reverse_lazy('home')
 
 
@@ -151,6 +151,81 @@ class FirstLoginPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         return response
 
 
+@login_required
+def subir_csv(request):
+    if request.method == 'POST' and request.FILES.get('archivo_csv'):
+        archivo_csv = request.FILES['archivo_csv']
+        datos = []
+
+        # Procesar el archivo CSV
+        try:
+            decoded_file = archivo_csv.read().decode('utf-8').splitlines()
+            
+            if not archivo_csv.name.endswith('.csv'):
+                return HttpResponse("Error: El archivo debe ser un CSV.")
+            
+            # Verificar si el archivo está vacío
+            if not decoded_file:
+                # raise ValueError("El archivo CSV está vacío.")
+                return HttpResponse("Error: El archivo CSV está vacío.")
+
+
+            reader = csv.reader(decoded_file)
+            filas = 3
+            # Validar que el archivo tenga al menos 15 filas (14 encabezados + 1 de datos)
+            if sum(1 for _ in reader) < filas:
+                return HttpResponse(f"Error: El archivo CSV debe tener al menos {filas} filas.")
+
+            # Reiniciar el lector para procesar los datos
+            archivo_csv.seek(0)
+            decoded_file = archivo_csv.read().decode('utf-8').splitlines()
+            reader = csv.reader(decoded_file)
+
+
+            # Saltar las primeras 1 filas (encabezado)
+            for _ in range(1):
+                next(reader)
+                
+            # Guardar los datos en la base de datos
+            for fila in reader:
+                # if len(fila) < 3:
+                #     return HttpResponse("Error: Algunas filas tienen menos de 3 columnas.")
+
+                try:
+                    # print('----',fila)
+                    Registro.objects.create(
+                        columna1=fila[0],
+                        columna2=int(fila[1]),  # Conversión si aplica
+                        columna3=fila[2]  # Ajusta formatos según tu modelo
+                    )
+                except ValueError as e:
+                    return HttpResponse(f"Error de formato en los datos: {str(e)}")
+                except IndexError:
+                    return HttpResponse("Error: Hay filas con menos columnas de las esperadas.")
+
+
+
+            # return HttpResponse("Datos guardados exitosamente!")
+
+            #  Reiniciar el lector para procesar los datos
+            archivo_csv.seek(0)
+            decoded_file = archivo_csv.read().decode('utf-8').splitlines()
+            reader = csv.reader(decoded_file)
+
+            # Leer el resto de los datos
+            for fila in reader:
+                datos.append(fila)
+
+            return render(request, 'file_up/resultado.html', {'datos': datos})
+
+        except UnicodeDecodeError:
+            return HttpResponse("Error al decodificar el archivo. Asegúrate de que esté en formato UTF-8.")
+        except csv.Error:
+            return HttpResponse("Error en el formato del archivo CSV.")
+        except Exception as e:
+            return HttpResponse(f"Error al procesar el archivo: {str(e)}")
+
+    return render(request, 'file_up/subir_csv.html')
 
 
 

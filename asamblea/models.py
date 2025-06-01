@@ -51,10 +51,10 @@ class Militante(AbstractUser):
     def __str__(self):
         return f"{self.username} - {self.email}"
     
-    def clean(self):
-        # Validación para email (ya lo maneja User por defecto con unique=True)
-        # Si quieres una validación adicional o un mensaje personalizado,puedes hacerlo aquí
-        pass
+    # def clean(self):
+    #     # Validación para email (ya lo maneja User por defecto con unique=True)
+    #     # Si quieres una validación adicional o un mensaje personalizado,puedes hacerlo aquí
+    #     pass
 
 
     # def save(self,*args,**kwargs):
@@ -67,8 +67,14 @@ class Militante(AbstractUser):
     #         raise ValidationError("El correo electrónico ya está en uso.")
     #     ##super().save(*args,**kwargs)
 
+class Registro(models.Model):
+    columna1 = models.CharField(max_length=255)
+    columna2 = models.IntegerField()
+    columna3 = models.CharField()
+    # Agrega más campos según tu CSV
 
-
+    def __str__(self):
+        return self.columna1
 
 # class Candidato(ClaseModelo):
 #     name=models.CharField(max_length=12)
