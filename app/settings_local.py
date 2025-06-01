@@ -76,25 +76,25 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+ """
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         # 'NAME': 'partido',
-#         'NAME': 'partidoverdeorg_asamblea',
-#         'HOST': 'localhost',
-#         'USER': 'postgres',
-#         'PASSWORD': '12345',
-#         'PORT': 5433
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'partido',
+        'NAME': 'partidoverdeorg_asamblea',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'PORT': 5433
+    }
+}
 
 
 # Password validation

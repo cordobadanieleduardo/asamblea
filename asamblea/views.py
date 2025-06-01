@@ -44,36 +44,35 @@ def enviar_email_activacion(usuario):
 
     mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
 
-    # send_mail(
-    #     'Activa tu cuenta',
-    #     mensaje,
-    #     'desarrollotecnologico@partidoverde.org.co',  # Remitente
-    #     [usuario.email],  # Destinatario
-    #     fail_silently=False,
-    # )
+    send_mail(
+        'Activa tu cuenta',
+        mensaje,
+        'desarrollotecnologico@partidoverde.org.co',  # Remitente
+        [usuario.email],  # Destinatario
+        fail_silently=False,
+    )
 
-    from_email_user = settings.EMAIL_HOST_USER
-    to_email = usuario.email
-    ##context = {user_display, url_activacion }
+    # from_email_user = settings.EMAIL_HOST_USER
+    # to_email = usuario.email
     context={'user_display': user_display, 'activate_url': activate_url}
-    html_body = render_to_string('usuarios/email_confirmation_message.html', context)
-    email_subject = '¡Tu solicitud debe ser activada con tú correo!'
-    email = EmailMultiAlternatives(email_subject, html_body, from_email_user, [to_email])
-    email.content_subtype = "html"  # Agregar esta línea para que el contenido sea HTML
-    email.send()
-
-    # contexto = {'user_display': usuario, 'activate_url': url_activacion}
-    # html_content = render_to_string('usuarios/email_confirmation_message.html', contexto)
-    # text_content = f"Hola {usuario.username}, activa tu cuenta en el siguiente enlace: {url_activacion}"
-
-    # email = EmailMultiAlternatives(
-    #     subject="Activa tu cuenta",
-    #     body=text_content,
-    #     from_email=settings.EMAIL_HOST_USER,
-    #     to=[usuario.email]
-    # )
-    # email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
+    # html_body = render_to_string('usuarios/email_confirmation_message.html', context)
+    # email_subject = '¡Tu solicitud debe ser activada con tú correo!'
+    # email = EmailMultiAlternatives(email_subject, html_body, from_email_user, [to_email])
+    # email.content_subtype = "html"  # Agregar esta línea para que el contenido sea HTML
     # email.send()
+
+    # # contexto = {'user_display': usuario, 'activate_url': url_activacion}
+    html_content = render_to_string('usuarios/email_confirmation_message.html', context)
+    text_content = f"Hola {usuario.username}, activa tu cuenta en el siguiente enlace: {activate_url}"
+
+    email = EmailMultiAlternatives(
+        subject="Activa tu cuenta",
+        body=text_content,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[usuario.email]
+    )
+    #email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
+    email.send()
 
     print("Correo de activación enviado.")
 
@@ -90,7 +89,7 @@ def activar_cuenta(request, uidb64, token):
     if usuario is not None and default_token_generator.check_token(usuario, token):
         usuario.is_active = True
         usuario.save()
-        login(request, usuario)
+       # login(request, usuario)
         mensaje = f"Hola {usuario.get_short_name}, su cuenta está activa"
         context = {'segment': 'index', 'usuario': usuario, 'mensaje': mensaje, }
         html_template = loader.get_template('usuarios/email_militancia.html')
