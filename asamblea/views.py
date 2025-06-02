@@ -22,6 +22,8 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
+from django.db.models import Count, Sum
 
 
 from django.template import loader
@@ -228,6 +230,88 @@ def subir_csv(request):
     return render(request, 'file_up/subir_csv.html')
 
 
+@login_required
+def votar(request):
+    # Verificar si el usuario ya votó
+    if Voto.objects.filter(user=request.user).exists():
+        # return HttpResponse("Ya has votado.")
+        return HttpResponseRedirect(reverse('asamblea:resultado'))
+
+    opciones = Plancha.objects.all()
+
+    if request.method == 'POST':
+        opcion_id = request.POST.get('opcion_id')
+        try:
+            opcion = get_object_or_404(Plancha, pk=opcion_id)
+        except (TypeError, ValueError, OverflowError, Plancha.DoesNotExist):
+            opcion = None
+
+        if opcion:
+            Voto.objects.create(user=request.user, opcion=opcion)
+            # ✅ Redirección a una vista de confirmación o resultados
+            return HttpResponseRedirect(reverse('asamblea:resultado'))
+    return render(request, 'votar/votar.html', {'opciones': opciones})
+
+@login_required
+def resultado(request):
+    
+    conteo =  Voto.objects\
+        .values('opcion__name')\
+        .annotate(total_votos=Count('id'))\
+        .order_by('-total_votos') 
+    datos = (
+        # Voto.objects
+        # .values('opcion__name')
+        # .annotate(total_votos=Count('id'))
+        # .order_by('-total_votos') 
+        conteo
+        
+        # Voto.values("opcion").annotate(Count("opcion")).order_by()
+
+    )
+    print(conteo)
+
+    labels = [d['opcion__name'] for d in datos]
+    valores = [d['total_votos'] for d in datos]
+
+    return render(request, 'votar/resultado.html', {
+        'labels': labels,
+        'valores': valores,
+        'datos': conteo
+    })
+
+
+# @login_required
+# def votar2(request):
+#     if Voto.objects.filter(user=request.user).exists():
+#         return HttpResponse("Error: Ya has votado.")
+
+#     opciones = Plancha.objects.all()
+
+#     if request.method == 'POST':
+#         opcion_id = request.POST.get('opcion_id')
+#         # print(opcion_id)
+#         try:
+#             opcion = get_object_or_404(Plancha,pk=opcion_id)
+#             # opcion = Plancha.objects.get(id=opcion_id)
+#             opcion_seleccionada = opcion.opcion_set.get(pk=opcion_id)
+
+#         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+#             print('Plancha no exite')
+#             opcion = None
+
+#         # # Verificar si el usuario ya votó
+#         # if Voto.objects.filter(user=request.user).exists():
+#         #     return HttpResponse("Error: Ya has votado.")
+
+#         # Registrar el voto
+#         if opcion is not None:
+#             Voto.objects.create(user=request.user, opcion=opcion)
+#             return HttpResponse("Voto registrado exitosamente!")
+
+#     # return render(request, 'votar/votar.html', {'opciones': opciones})
+#     # Si alguien accede por GET a esta URL, redirigimos al detalle:
+#     return HttpResponseRedirect(reverse('encuestas:detalle', args=(opcion.id,)))
 
 
 

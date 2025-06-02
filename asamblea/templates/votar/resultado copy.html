@@ -1,0 +1,78 @@
+<!-- templates/votar/resultados.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de la votación</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <h1>¡Gracias por votar!</h1>
+    <a href="/">Volver al inicio</a>
+
+
+
+    <h1>Resultados de la votación</h1>
+
+    <canvas id="graficoBarras" width="400" height="200"></canvas>
+    <canvas id="graficoTorta" width="400" height="200"></canvas>
+
+    <script>
+        const labels = {{ labels| safe }};
+        const data = {{ valores| safe }};
+
+        const colores = [
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 205, 86, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(201, 203, 207, 0.6)'
+        ];
+
+        // Gráfico de barras
+        new Chart(document.getElementById('graficoBarras'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Votos por opción',
+                    data: data,
+                    backgroundColor: colores,
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Gráfico de torta
+        new Chart(document.getElementById('graficoTorta'), {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Votos por opción',
+                    data: data,
+                    backgroundColor: colores,
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+</body>
+
+</html>

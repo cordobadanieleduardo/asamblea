@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de la Votación</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- clave para móviles -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 1rem;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .contenedor {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        canvas {
+            width: 100% !important;
+            max-width: 100%;
+            height: auto !important;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 600px) {
+
+            table th,
+            table td {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+
+        <h1>¡Gracias por votar!</h1>
+        <a href="/">Volver al inicio</a>
+
+        <h1>📊 Resultados de la Votación</h1>
+
+        <h2>Tabla de Resultados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Opción</th>
+                    <th>Total de Votos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in datos %}
+                <tr>
+                    <td>{{ v.opcion__name }}</td>
+                    <td>{{ v.total_votos }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Gráfico de Barras</h2>
+        <canvas id="graficoBarras"></canvas>
+
+        <h2>Gráfico de Torta</h2>
+        <canvas id="graficoTorta"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ labels| safe }};
+        const datos = {{ valores| safe }};
+        const colores = [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)'
+        ];
+
+        new Chart(document.getElementById('graficoBarras'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total de votos',
+                    data: datos,
+                    backgroundColor: colores,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                // maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('graficoTorta'), {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: datos,
+                    backgroundColor: colores
+                }]
+            },
+            options: {
+                responsive: true,
+                // maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+
+</html>

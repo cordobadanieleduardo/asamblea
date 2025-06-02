@@ -24,16 +24,27 @@ class Plancha(ClaseModelo):
     name=models.CharField(max_length=120)
     # email=models.EmailField(max_length=150)
     mostrar=models.BooleanField(default=True)
-    imagen=models.ImageField(upload_to='imagenes/')
-        
+    imagen=models.ImageField(upload_to='opciones_voto/')
+    fecha_inicio = models.DateTimeField(null=True, blank=True)
+    fecha_fin = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         verbose_name="Plancha"
         verbose_name_plural="Planchas"
         ordering=['name']
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
+class Voto(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    opcion = models.ForeignKey(Plancha, on_delete=models.CASCADE)
+    fecha_voto = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ('user','opcion',)  # Evita que un usuario vote más de una vez
+
+    def __str__(self):
+        return f"{self.user.username} votó por {self.opcion.name}"
 
 class Militante(AbstractUser):
     username=models.CharField(max_length=12,unique=True)
@@ -50,6 +61,7 @@ class Militante(AbstractUser):
 
     def __str__(self):
         return f"{self.username} - {self.email}"
+        # return f"{self.username} - {self.email} - {" Placha: "+ self.plancha.name if self.plancha.name else " sin plancha"}"
     
     # def clean(self):
     #     # Validación para email (ya lo maneja User por defecto con unique=True)
@@ -75,6 +87,10 @@ class Registro(models.Model):
 
     def __str__(self):
         return self.columna1
+
+
+
+
 
 # class Candidato(ClaseModelo):
 #     name=models.CharField(max_length=12)

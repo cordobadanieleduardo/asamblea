@@ -10,8 +10,12 @@ urlpatterns = [
     path('enviar/', enviar_email_activacion, name='enviar_cuenta'),
     path('accounts/password/change/first-login/', FirstLoginPasswordChangeView.as_view(), name='password_change_first_login'),
     path('subir-csv/', subir_csv, name='subir_csv'),
+    path('votar/', votar, name='votar'),
+    path('resultado/', resultado, name='resultado'),
 
 ]
 
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  
+  
