@@ -1,0 +1,100 @@
+
+<h2>Votación:</h2>
+
+
+<form method="POST" onsubmit="return confirmarVoto()">
+    {% csrf_token %}
+    <label>Elige una opción:</label>
+    <div class="opciones">
+
+        {% for opcion in opciones %}
+
+        <div class="opcion" onclick="seleccionarOpcion('{{ opcion.id }}')">
+            <!-- <label> -->
+                <input type="radio" name="opcion_id" value="{{ opcion.id }}" onclick="activarBoton()" id="opcion_{{ opcion.id }}">
+                <img src="{{ opcion.imagen.url }}" alt="{{ opcion.name }}" width="150" onclick="activarBoton()">
+                <span>{{ opcion.name }}</span>
+            <!-- </label> -->
+        </div>
+        {% endfor %}
+    </div>
+    <button type="submit" id="boton-votar" disabled>Votar</button>
+</form>
+
+<script>
+    function activarBoton() {
+        document.getElementById("boton-votar").disabled = false;
+    }
+
+    function seleccionarOpcion(opcionId) {
+        let radio = document.getElementById("opcion_" + opcionId);
+        radio.checked = true;
+        activarBoton();
+    }
+
+    function confirmarVoto() {
+        let opcionSeleccionada = document.querySelector('input[name="opcion_id"]:checked');
+        if (!opcionSeleccionada) {
+            alert("Por favor, selecciona una opción antes de votar.");
+            return false; // Detiene el envío si no se ha elegido nada
+        }
+        
+        let confirmacion = confirm("¿Quieres confirmar tu voto por " + opcionSeleccionada.nextElementSibling.alt + "?");
+        return confirmacion; // Si el usuario confirma, el formulario se envía
+    }
+
+
+</script>
+
+
+
+
+<style>
+    .opciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .opcion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 2px solid #ccc;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .opcion:hover {
+        border-color: #00ff08;
+    }
+    .opcion img {
+        width: 150px;
+        /* width: 100%; */
+        height: auto;
+        border-radius: 10px;
+    }
+    .opcion input {
+        display: none;
+    }
+    .opcion span {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    .opcion input:checked + img {
+        border: 4px solid #6aff00;
+    }
+
+
+    /* 🌐 Estilos Responsivos */
+    @media screen and (max-width: 768px) {
+        .opciones {
+            flex-direction: column; /* Apilar opciones en pantallas pequeñas */
+            align-items: center;
+        }
+
+        .opcion {
+            width: 90%;
+        }
+    }
+</style>

@@ -76,25 +76,24 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         # 'NAME': 'partido',
-#         'NAME': 'partidoverdeorg_asamblea',
-#         'HOST': 'localhost',
-#         'USER': 'postgres',
-#         'PASSWORD': '12345',
-#         'PORT': 5433
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'partidoverdeorg_asamblea',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'PORT': 5432
+    }
+}
 
 
 # Password validation
@@ -157,8 +156,8 @@ AUTH_USER_MODEL = 'asamblea.Militante'
 
 # COnfiracion de correo#
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #local
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #local
 EMAIL_HOST = 'smtp.gmail.com'  # Puedes usar otros servicios como Outlook, SendGrid, etc.
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -69,3 +69,13 @@ usuario = Militante.objects.get(username="1049629006")
 usuario
 enviar_email_activacion(usuario)
 exit()
+
+
+py manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.get(username="1049629006")
+usuario
+enviar_email_activacion(usuario)
+exit()

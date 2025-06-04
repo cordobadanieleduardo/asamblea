@@ -43,7 +43,8 @@ class CustomUserAdmin(BaseUserAdmin):
 
 
 class PlanchaAdmin(admin.ModelAdmin):
-    readonly_fields = ('fc', 'fm')
+    list_display =  ('name', 'mostrar', 'fc',)
+    readonly_fields = ('fc', 'fm',)
     
 
 

@@ -83,7 +83,7 @@ def enviar_email_activacion(usuario):
         from_email=settings.EMAIL_HOST_USER,
         to=[usuario.email]
     )
-    #email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
+    email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
     email.send()
 
     print("Correo de activación enviado.")
@@ -237,8 +237,7 @@ def votar(request):
         # return HttpResponse("Ya has votado.")
         return HttpResponseRedirect(reverse('asamblea:resultado'))
 
-    opciones = Plancha.objects.all()
-
+    opciones = Plancha.objects.filter(mostrar=True)
     if request.method == 'POST':
         opcion_id = request.POST.get('opcion_id')
         try:
@@ -255,10 +254,8 @@ def votar(request):
 @login_required
 def resultado(request):
     
-    conteo =  Voto.objects\
-        .values('opcion__name')\
-        .annotate(total_votos=Count('id'))\
-        .order_by('-total_votos') 
+    conteo =  Voto.objects.values('opcion__name').annotate(total_votos=Count('id')).order_by('-total_votos')
+     
     datos = (
         # Voto.objects
         # .values('opcion__name')
