@@ -20,6 +20,19 @@ from bases.models import ClaseModelo
 #     def __str__(self):
 #         return f"Profile of user {self.id}"
 
+class Lista(models.Model):
+    name=models.CharField(max_length=120)
+    # email=models.EmailField(max_length=150)
+    mostrar=models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name="Lista"
+        verbose_name_plural="Listas"
+        ordering=['name']
+
+    def __str__(self):
+        return f"{self.name}"
+
 class Plancha(ClaseModelo):
     name=models.CharField(max_length=120)
     # email=models.EmailField(max_length=150)
@@ -40,6 +53,7 @@ class Voto(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     opcion = models.ForeignKey(Plancha, on_delete=models.CASCADE)
     fecha_voto = models.DateTimeField(auto_now_add=True)
+    
     class Meta:
         unique_together = ('user','opcion',)  # Evita que un usuario vote más de una vez
 
@@ -49,8 +63,11 @@ class Voto(models.Model):
 class Militante(AbstractUser):
     username=models.CharField(max_length=12,unique=True)
     email=models.EmailField(max_length=120,unique=True)
-    must_change_password=models.BooleanField(default=False)
+    must_change_password=models.BooleanField(default=False, verbose_name='Debe cambiar contraseña')
     plancha=models.ForeignKey(Plancha,on_delete=models.CASCADE,null=True,blank=True)
+    send_email=models.BooleanField(default=False, verbose_name='se envió correo')
+    list=models.ForeignKey(Lista,on_delete=models.CASCADE,null=True,blank=True, verbose_name='Lista')
+    position = models.IntegerField(default=0, verbose_name='Posición')
 
     class Meta:
         verbose_name_plural="Militantes"
@@ -88,8 +105,13 @@ class Registro(models.Model):
     def __str__(self):
         return self.columna1
 
+class EmailEnviado(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    count = models.IntegerField()
+    # fc = models.DateTimeField(auto_now_add=True)
 
-
+    def __str__(self):
+        return f"{self.user} - {self.count}"
 
 
 # class Candidato(ClaseModelo):

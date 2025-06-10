@@ -4,13 +4,15 @@
 {% block page_content %}
 <div class="container-fluid">
 
+  {% if  not isVoto %}
 
-  <a href="/votar"> Votar</a>
+  <a  class="btn btn-primary btn-lg" href="/votar"> Votar</a>
+  {% else %}
 
   <br>
-  <a href="/resultado"> Resultados </a>
+  <a  class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
   
-  
+  {% endif %}
 </div>
 
 {% endblock %}

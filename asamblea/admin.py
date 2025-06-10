@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Militante, Plancha , Voto
+from .models import Militante, Plancha , Voto, Lista
 
 # Register your models here.
 
@@ -18,7 +18,7 @@ class VotoInline(admin.StackedInline):
 
 class CustomUserAdmin(BaseUserAdmin):
     model = Militante
-    list_display =  BaseUserAdmin.list_display + ('username', 'email', 'first_name', 'last_name','plancha' ,'is_staff', 'is_active','votos_emitidos',)  # Campos visibles en el listado
+    list_display =  BaseUserAdmin.list_display + ('username', 'email', 'first_name', 'last_name','plancha' ,'is_staff', 'is_active','send_email','must_change_password','position','list','votos_emitidos',)  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name')  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
     list_filter = ('is_staff', 'is_active','plancha')  # Filtros en la barra lateral
@@ -29,7 +29,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        ('Placha', {'fields': ('plancha',)}),
+        ('Atributos', {'fields': ('plancha','send_email','must_change_password','position','list',)}),
         ('Información Personal', {'fields': ('first_name', 'last_name')}),
         ('Permisos', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
     )
@@ -37,7 +37,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active','plancha')}
+            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active','plancha','send_email','must_change_password','position','list',)}
         ),
     )
 
@@ -58,6 +58,7 @@ class PlanchaAdmin(admin.ModelAdmin):
 
 admin.site.register(Plancha, PlanchaAdmin)
 admin.site.register(Voto)
+admin.site.register(Lista)
 admin.site.register(Militante, CustomUserAdmin)
 
 

@@ -79,3 +79,46 @@ usuario = Militante.objects.get(username="1049629006")
 usuario
 enviar_email_activacion(usuario)
 exit()
+
+
+py manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006", is_active= False)
+usuario
+exit()
+
+
+
+
+
+py manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1032434230", email="dzambrano@partidoverde.org.co", password="1032434230", is_active= False)
+usuario
+exit()
+
+py manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1007717602", email="tutores@partidoverde.org.co", password="1007717602", is_active= False)
+usuario
+exit()
+
+
+
+
+
+
+py manage.py shell
+
+from asamblea.models import Militante
+from asamblea.views import enviar_email_activacion
+usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006")
+usuario
+exit()
+
