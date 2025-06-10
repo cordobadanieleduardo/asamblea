@@ -67,13 +67,22 @@ def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print('username ',username, 'password ',password )
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if not user.is_active:                
                 hilo = threading.Thread(target=enviar_email_activacion, args=(user,))
                 hilo.start()
+                
+                # request.session['info'] = f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.'
+                # return redirect('bases:envio')  # Redirigir sin reenviar el formulario
+
+                # return HttpResponseRedirect(reverse('bases:envio',{'info':f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.' }))
+                # return render(request, 'bases/activate_account.html', {'info': f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.'})
+                # return redirect('asamblea:envio', {'info': f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.'})
+                # return redirect(request.get_absolute_url())  # Redirigir a la página del objeto
+
                 return render(request, 'bases/login.html', {'info': f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.'})
+                # return render(request, 'bases/activate_account.html', {'info': f'Se ha enviado un correo de activación. Revisa tu correo {user.email}. Debes activar tu cuenta e iniciar sesión nuevamente.'})
             # elif user.must_change_password:
             #     return redirect('asamblea:password_change_first_login')
             else:
@@ -109,6 +118,15 @@ def enviar_email_activacion(user):
         email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
         email.send()
 
+        
+        # envio= EmailEnviado.objects.filter(user=user).first()
+        # if envio: 
+        #     envio = EmailEnviado.objects.update(user,count=envio.count+1)
+        # else:
+        #     envio = EmailEnviado.objects.create(user=user, count=1)
+            
+          # deactivar flag en el perfil   # user.is_active = False
         user.send_email = True
         user.save()
         print("Correo de activación enviado.", user)
+        # print("Correo registro.", envio)

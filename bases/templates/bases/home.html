@@ -1,18 +1,12 @@
 {% extends 'base/base.html' %}
-
-
+{% block background %} {% load static %} {% static 'base/img/login/register_background.png' %} {% endblock %}
 {% block page_content %}
 <div class="container-fluid">
-
-  {% if  not isVoto %}
-
-  <a  class="btn btn-primary btn-lg" href="/votar"> Votar</a>
+  {% if not isVoto %}
+  <a class="btn btn-primary btn-lg" href="/votar"> Votar</a>
   {% else %}
-
   <br>
-  <a  class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
-  
+  <a class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
   {% endif %}
 </div>
-
 {% endblock %}

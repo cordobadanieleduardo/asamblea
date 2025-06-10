@@ -1,10 +1,16 @@
 {% extends 'base/base.html' %}
 
+{% block top_bar %}
+{% endblock %}
+{% block page_content %}
+{% endblock %}
 
-{% block top_bar %}{% endblock %}
-{% block page_content %}{% endblock %}
+
+{% block background %} {% load static %} {% static 'base/img/login/login_background.png' %} {% endblock %}
+
+
 {% block login %}
-<div class="container" id="id_container">
+  <div class="container" id="id_container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
       <div class="col-xl-10 col-lg-12 col-md-9">
@@ -16,54 +22,53 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
+                    <p class=" text-gray-900 mb-4 fs-1">¡Bienvenido!</p>
                     <small class="text-danger">
-                        {% if error %}
-                            <p style="color: red;">{{ error }}</p>
-                        {% endif %}
+                      {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                      {% endif %}
 
-                        {% if info %}
-                            <p style="color: blue;">{{ info }}</p>
-                        {% endif %}
+                      {% if info %}
+                        <p style="color: blue;">{{ info }}</p>
+                      {% endif %}
 
-
-                        {% if form.errors %}
-                            {% for field in form %}
-                                {% if field.errors %}
-                                    {% for error in field.errors %}
-                                        {{ error|escape }}
-                                    {% endfor %}
-                                {% endif %}
+                      {% if form.errors %}
+                        {% for field in form %}
+                          {% if field.errors %}
+                            {% for error in field.errors %}
+                              {{ error|escape }}
                             {% endfor %}
-                        
-                            {% if form.non_field_errors%}
-                                {% for error in form.non_field_errors %}
-                                    {{ error|escape }}
-                                {% endfor %}
-                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+
+                        {% if form.non_field_errors %}
+                          {% for error in form.non_field_errors %}
+                            {{ error|escape }}
+                          {% endfor %}
                         {% endif %}
+                      {% endif %}
                     </small>
                   </div>
                   <form id="login-form" class="user" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                      <input type="text" pattern="\d*" inputmode="numeric" maxlength="12" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-user" id="id_username" name="username" aria-describedby="emailHelp" placeholder="Número de Cédula" required>
+                      <input type="text" pattern="\d*" inputmode="numeric" maxlength="12" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-user" id="id_username" name="username" aria-describedby="emailHelp" placeholder="Número de Cédula" required />
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="id_password" name="password" placeholder="Contraseña" required>
+                      <input type="password" class="form-control form-control-user" id="id_password" name="password" placeholder="Contraseña" required />
                     </div>
-                    <button type="submit" id="submit-btn" class="btn btn-primary btn-user btn-block">Acceder</button>
+                    <button type="submit" id="submit-btn" class="btn btn-success btn-user btn-block">Acceder</button>
                   </form>
 
                   <!-- Spinner oculto -->
-                  <!-- <div id="spinner" style="display: none;">
+                  <!--  <div id="spinner" style="display: none;">
                       <img src="{#% static 'base/img/spinner.gif' %#}" alt="Cargando...">
-                  </div> -->
-<div class="text-center">
-  <div id="spinner" style="display: none;" class="spinner-border" role="status">
-    <span class="visually-hidden">Enviado correo de activación...</span>
-  </div>
-</div>
+                  </div>  -->
+                  <div class="d-flex justify-content-center text-center m-3">
+                    <div id="spinner" class="spinner-border" role="status" style="display: none;">
+                      <span class="visually-hidden">Enviando correo de activación...</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,43 +77,32 @@
       </div>
     </div>
   </div>
-{% endblock login %}
+{% endblock %}
 
 {% block js_page %}
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function () {
+      document.getElementById('submit-btn').disabled = true
+      document.getElementById('submit-btn').style.display = 'none'
+      document.getElementById('spinner').style.display = 'block'
+    })
+  </script>
 
-<script>
-    document.getElementById("login-form").addEventListener("submit", function() {
-        document.getElementById("submit-btn").disabled = true;
-        document.getElementById("spinner").style.display = "block";
-         document.getElementById("login-form").style.display = "none";
-    });
-</script>
-
-<script>
-  {% if form.errors %}
+  <script>
+    {% if form.errors %}
       {% for field in form %}
-          {% if field.errors %}
-              {% for error in field.errors %}
-                mensaje('{{ error|escape }}','red');
-              {% endfor %}
-          {% endif %}
-      {% endfor %}
-  
-      {% if form.non_field_errors%}
-          {% for error in form.non_field_errors %}
-            mensaje('{{ error|escape }}','red');
+        {% if field.errors %}
+          {% for error in field.errors %}
+            mensaje('{{ error|escape }}', 'red');
           {% endfor %}
+        {% endif %}
+      {% endfor %}
+
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          mensaje('{{ error|escape }}', 'red');
+        {% endfor %}
       {% endif %}
-  {% endif %}
-
-
-  //document.getElementById('numeric-input').addEventListener('keypress', function(event) {
-   // if (!/[0-9]/.test(event.key)) {
-     //   event.preventDefault();
-      ///}
-  //});
-</script>
-
-
-
+    {% endif %}
+  </script>
 {% endblock %}
