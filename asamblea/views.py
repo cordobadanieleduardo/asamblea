@@ -3,17 +3,19 @@ import sys
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
+
 from django.http import HttpResponse
-from django.views import generic
-from django.contrib import messages
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.decorators import login_required, permission_required
+# from django.views import generic
+# from django.contrib import messages
+# from django.template.loader import render_to_string
+# from django.core.mail import EmailMultiAlternatives
+# from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required #, permission_required
 
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+# from django.utils.encoding import force_bytes
+# from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -23,105 +25,20 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.db.models import Count, Sum
+from django.db.models import Count #, Sum
 
-from django.contrib import messages
+# from django.contrib import messages
 
 from django.contrib.auth.signals import user_logged_in
-from django.dispatch import receiver
-import threading
+# from django.dispatch import receiver
+# import threading
 
 from django.template import loader
 import csv
+import pandas as pd
 
 from .models import Militante
 from .forms import *
-
-from bases.views import SinPrivilegios
-
-
-# class UserView(SinPrivilegios, generic.ListView):
-#     # permission_required = "asamblea.view_categoria"
-#     model = Militante
-#     template_name = "asamblea/user_list.html"
-#     context_object_name = "obj"
-
-
-
-## Crear una vista para enviar correos de activación
-
-# def enviar_email_activacion(usuario):
-#     token = default_token_generator.make_token(usuario)
-#     uid = urlsafe_base64_encode(force_bytes(usuario.pk))
-#     # print('Usuario no encontrado.....', usuario)
-#     # print('Usuario no encontrado.....', usuario.last_login)
-    
-#     # try:
-#     #     user = get_object_or_404(Militante, pk=usuario.pk)
-#     # except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#     #     user = None
-#     #     print('Usuario no encontrado', user)
-    
-#     # print('Usser', usuario)
-        
-#     if usuario is not None:
-#         # deactivar flag en el perfil
-#         # usuario.is_active = False
-#         usuario.send_email = True
-#         usuario.save()
-        
-#         # print("guardó", usuario)
-    
-#     activate_url = f"http://{settings.DOMINIO}{reverse('asamblea:activar_cuenta', kwargs={'uidb64': uid, 'token': token})}"
-#     user_display = usuario.email
-
-#     # mensaje = f"Hola {usuario.username}, activa tu cuenta haciendo clic en el siguiente enlace: {activate_url}"
-
-#     # send_mail(
-#     #     'Activa tu cuenta',
-#     #     mensaje,
-#     #     'desarrollotecnologico@partidoverde.org.co',  # Remitente
-#     #     [usuario.email],  # Destinatario
-#     #     fail_silently=False,
-#     # )
-
-#     # from_email_user = settings.EMAIL_HOST_USER
-#     # to_email = usuario.email
-#     context={'user_display': user_display, 'activate_url': activate_url}
-#     # html_body = render_to_string('usuarios/email_confirmation_message.html', context)
-#     # email_subject = '¡Tu solicitud debe ser activada con tú correo!'
-#     # email = EmailMultiAlternatives(email_subject, html_body, from_email_user, [to_email])
-#     # email.content_subtype = "html"  # Agregar esta línea para que el contenido sea HTML
-#     # email.send()
-
-#     # # contexto = {'user_display': usuario, 'activate_url': url_activacion}
-#     html_content = render_to_string('usuarios/email_confirmation_message.html', context)
-#     text_content = f"Hola {usuario.username}, activa tu cuenta en el siguiente enlace: {activate_url}"
-
-#     email = EmailMultiAlternatives(
-#         subject="Activa tu cuenta",
-#         body=text_content,
-#         from_email=settings.EMAIL_HOST_USER,
-#         to=[usuario.email]
-#     )
-#     email.attach_alternative(html_content, "text/html")  # Adjuntar versión HTML
-#     email.send()
-    
-#     envio= EmailEnviado.objects.get(user=usuario.email)
-#     if envio: 
-#         envio = EmailEnviado.objects.update(count=envio.count+1)
-#     else:
-#         envio =  EmailEnviado.objects.create(user=usuario, count=1)
-#     print("Correo de activación enviado.", usuario)
-#     print("Correo registro.", envio)
-
-
-# def password_change(request):
-#     # if request.user.is_authenticated:
-#     print(request.user)
-#     if request.user.must_change_password:
-#         return redirect('password_change_first_login')
-#     return redirect('bases:home')
 
 
 def activar_cuenta(request, uidb64, token):
@@ -155,47 +72,11 @@ def activar_cuenta(request, uidb64, token):
         html_template = loader.get_template('usuarios/email_confirm.html')
         return HttpResponse(html_template.render({},request))
     
-# class CustomLoginView(LoginView):    
-#     def get_success_url(self):
-        
-#         print('oeeeeee----')
-
-#     #     user = self.request.user
-#     #     # if hasattr(user, 'profile') and user.must_change_password:
-#     #     # if user.must_change_password:
-#     #     #     return reverse_lazy('asamblea:password_change_first_login')
-#     #     if user.is_authenticated:
-#     #         return reverse_lazy('bases:home')
-#     #     return reverse_lazy('bases:home')
-#     def form_valid(self, form):
-#         print('CustomLoginView----')
-        
-# @receiver(user_logged_in)
-# def enviar_correo_al_iniciar_sesion(sender, request, user, **kwargs):
-#     print('por aqui en receiver logeo----', user)
-#     if not user.send_email:
-#         print('por aqui en enviar correo----')
-        
-#         hilo = threading.Thread(target=enviar_email_activacion, args=(user,))
-#         hilo.start()
-#         # messages.info()
-        
-#         # mensaje = f"Hola {user.get_short_name}, su cuenta está activa"
-#         # context = {'segment': 'index', 'usuario': user, 'mensaje': mensaje, }
-#         # html_template = loader.get_template('usuarios/email.html')
-#         # return HttpResponse(html_template.render(context, request))
-        
-
-#         # enviar_email_activacion(user)
 
 class FirstLoginPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = 'registration/password_change_first_login.html'
     success_url = reverse_lazy('bases:home')  
 
-    # def get_success_url(self):
-        
-    #     print('por aqui---- get suce')
-    #     return redirect('bases:home')
     def form_valid(self, form):
         
         print('por aca ----')
@@ -208,10 +89,6 @@ class FirstLoginPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         user.save()
                 
         return response
-
-# from django.contrib.auth import authenticate, login
-# from django.shortcuts import redirect, render
-
 
 @login_required
 def subir_csv(request):

@@ -88,3 +88,25 @@ py manage.py runserver 0.0.0.0:8000
 
 C:\Program Files\PostgreSQL\17\bin
 
+
+
+Consejo importante: si no estás usando un entorno virtual (como venv o pipenv), el archivo incluirá
+ todas las dependencias instaladas globalmente, no solo las de tu proyecto. Para evitar eso y mantener 
+ tu proyecto limpio y portable, te recomiendo trabajar dentro de un entorno virtual. Por ejemplo:
+
+
+
+pip freeze > requirements.txt
+
+
+python -m venv venv
+source venv/bin/activate  # En Linux/macOS
+venv\Scripts\activate     # En Windows
+pip install -r requirements.txt  # Para instalar dependencias si ya tienes el archivo
+
+
+
+
+
+pip uninstall twisted-iocpsupport
+pip freeze > requirements.txt

@@ -1,0 +1,23 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+
+<li> 
+    <!-- <a href="" class="btn">asdas</a> -->
+    <form method="POST">
+          {% csrf_token %}
+        <input type="submit" value="Exportar usuarios">
+    </form>
+</li>
+
+
+<li>
+    <form enctype="multipart/form-data" method="POST" action="/admin/asamblea/militante/">
+        {% csrf_token %}
+        <input type="file" name="archivo_excel" required>
+        <input type="submit" value="Importar ventanilla única">
+    </form>
+</li>
+
+{{ block.super }}
+{% endblock %}

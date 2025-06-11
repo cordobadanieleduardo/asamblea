@@ -150,3 +150,15 @@ usuario = Militante.objects.create_user(username="10496290018", email="104962900
 
 exit()
 
+
+
+
+
+
+python manage.py shell
+
+from asamblea.models import Militante
+usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006", is_active= False)
+usuario
+exit()
+
