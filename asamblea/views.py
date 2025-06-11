@@ -315,18 +315,16 @@ def votar(request):
 def resultado(request):
     
     conteo =  Voto.objects.values('opcion__name').annotate(total_votos=Count('id')).order_by('-total_votos')
-     
+    
+    total_votos = sum(item['total_votos'] for item in conteo)
+    print(f"Total de votos: {total_votos}")
+ 
     datos = (
-        # Voto.objects
-        # .values('opcion__name')
-        # .annotate(total_votos=Count('id'))
-        # .order_by('-total_votos') 
         conteo
-        
-        # Voto.values("opcion").annotate(Count("opcion")).order_by()
-
     )
     print(conteo)
+    print()
+    print(conteo.count())
 
     labels = [d['opcion__name'] for d in datos]
     valores = [d['total_votos'] for d in datos]
@@ -334,5 +332,6 @@ def resultado(request):
     return render(request, 'votar/resultado.html', {
         'labels': labels,
         'valores': valores,
-        'datos': conteo
+        'datos': conteo,
+        'total_votos':total_votos,
     })

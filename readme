@@ -42,6 +42,13 @@ enviar_email_activacion(usuario)
 psql -h 127.0.0.1 -p 5432 -U partidoverdeorg_siravusr -d partidoverdeorg_sirav
 wmxt6jQA8Lx$
 
+
+psql -h 127.0.0.1 -p 5432 -U postgres -d partidoverdeorg_asamblea
+wmxt6jQA8Lx$
+
+
+createdb -U postgres partidoverdeorg_asamblea
+
 Listar todas las tablas en la base de datos actual
 
 \dt
@@ -120,5 +127,26 @@ from asamblea.models import Militante
 from asamblea.views import enviar_email_activacion
 usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006")
 usuario
+exit()
+
+
+
+
+py manage.py shell
+
+from asamblea.models import Militante
+usuario = Militante.objects.create_user(username="1049629007", email="1049629007@partidoverde.org.co", password="1049629007")
+usuario = Militante.objects.create_user(username="1049629008", email="1049629008@partidoverde.org.co", password="1049629008")
+usuario = Militante.objects.create_user(username="1049629009",  email="1049629009@partidoverde.org.co", password="1049629009")
+usuario = Militante.objects.create_user(username="10496290010", email="10496290010@partidoverde.org.co", password="10496290010")
+usuario = Militante.objects.create_user(username="10496290011", email="10496290011@partidoverde.org.co", password="10496290011")
+usuario = Militante.objects.create_user(username="10496290012", email="10496290012@partidoverde.org.co", password="10496290012")
+usuario = Militante.objects.create_user(username="10496290013", email="10496290013@partidoverde.org.co", password="10496290013")
+usuario = Militante.objects.create_user(username="10496290014", email="10496290014@partidoverde.org.co", password="10496290014")
+usuario = Militante.objects.create_user(username="10496290015", email="10496290015@partidoverde.org.co", password="10496290015")
+usuario = Militante.objects.create_user(username="10496290016", email="10496290016@partidoverde.org.co", password="10496290016")
+usuario = Militante.objects.create_user(username="10496290017", email="10496290017@partidoverde.org.co", password="10496290017")
+usuario = Militante.objects.create_user(username="10496290018", email="10496290018@partidoverde.org.co", password="10496290018")
+
 exit()
 
