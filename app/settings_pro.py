@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-^jp8#*3($1de-fwry6^k0h63o1!2+4bn%wkq6^syj$uirfb%!d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1","pythonanywhere.com"]
-
+ALLOWED_HOSTS = ['asambleascmj.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -38,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django_userforeignkey',
     'bases',
     'asamblea',
 ]
@@ -76,14 +73,14 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR , 'db.sqlite3'),
+    }
+}
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -94,7 +91,7 @@ DATABASES = {
         'PORT': 5432
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -170,7 +167,7 @@ EMAIL_HOST_PASSWORD = 'pnqumvlbrvhmdubu'  # Usa variables de entorno para mayor 
 DEFAULT_FROM_EMAIL = 'Asamblea <soporte@partidoverde.org.co>'
 
 
-DOMINIO = '127.0.0.1:9000'
+DOMINIO = 'asambleascmj.pythonanywhere.com'
 
 # configuración para archivos multimedia
 
