@@ -1,41 +1,20 @@
-import sys
-
-from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.mail import send_mail
-
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-# from django.views import generic
-# from django.contrib import messages
-# from django.template.loader import render_to_string
-# from django.core.mail import EmailMultiAlternatives
-# from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required #, permission_required
 
 from django.contrib.auth.tokens import default_token_generator
-# from django.utils.encoding import force_bytes
-# from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.http import urlsafe_base64_decode
 
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.db.models import Count #, Sum
-
-# from django.contrib import messages
-
-from django.contrib.auth.signals import user_logged_in
-# from django.dispatch import receiver
-# import threading
+from django.db.models import Count
 
 from django.template import loader
 import csv
-import pandas as pd
 
 from .models import Militante
 from .forms import *
@@ -166,6 +145,7 @@ def subir_csv(request):
 
     return render(request, 'file_up/subir_csv.html')
 
+from collections import defaultdict
 
 @login_required
 def votar(request):
@@ -174,7 +154,30 @@ def votar(request):
         # return HttpResponse("Ya has votado.")
         return HttpResponseRedirect(reverse('asamblea:resultado'))
 
-    opciones = Plancha.objects.filter(mostrar=True)
+    opciones = Plancha.objects.filter(mostrar=True).order_by('-name')
+    grupos = defaultdict(list)
+    for o in opciones:
+        print('plancha ', o.name)
+        militantes = Militante.objects.filter(plancha_id = o.pk)
+        for u in militantes:
+            print('username ', u.username)
+            grupos[o.name].append(u)
+
+        # if usuarios is None:
+        #     usuarios= Militante.objects.filter(plancha_id = o.pk)
+        # usuarios = None
+    usuario_por_plancha = list(grupos.values())
+    grupo_usuario_por_plancha = list(grupos.keys())
+
+    print('Plancha Dos')
+    print(grupos.get('Plancha Dos'))
+    
+    
+    print('Plancha Uno')
+    print(grupos.get('Plancha Uno'))
+
+    # print(grupo_usuario_por_plancha)
+
     if request.method == 'POST':
         opcion_id = request.POST.get('opcion_id')
         try:
@@ -186,7 +189,13 @@ def votar(request):
             Voto.objects.create(user=request.user, opcion=opcion)
             # ✅ Redirección a una vista de confirmación o resultados
             return HttpResponseRedirect(reverse('asamblea:resultado'))
-    return render(request, 'votar/votar.html', {'opciones': opciones})
+        
+    return render(request, 'votar/votar.html',
+                  {'opciones': opciones,
+                   'usuario_por_plancha':usuario_por_plancha,
+                   'grupo_usuario_por_plancha': grupo_usuario_por_plancha,
+                   'grupos': dict(grupos)
+                   })
 
 @login_required
 def resultado(request):

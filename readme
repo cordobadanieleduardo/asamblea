@@ -133,19 +133,22 @@ exit()
 
 py manage.py shell
 
-from asamblea.models import Militante
-usuario = Militante.objects.create_user(username="1049629007", email="1049629007@partidoverde.org.co", password="1049629007")
-usuario = Militante.objects.create_user(username="1049629008", email="1049629008@partidoverde.org.co", password="1049629008")
-usuario = Militante.objects.create_user(username="1049629009",  email="1049629009@partidoverde.org.co", password="1049629009")
-usuario = Militante.objects.create_user(username="10496290010", email="10496290010@partidoverde.org.co", password="10496290010")
-usuario = Militante.objects.create_user(username="10496290011", email="10496290011@partidoverde.org.co", password="10496290011")
-usuario = Militante.objects.create_user(username="10496290012", email="10496290012@partidoverde.org.co", password="10496290012")
-usuario = Militante.objects.create_user(username="10496290013", email="10496290013@partidoverde.org.co", password="10496290013")
-usuario = Militante.objects.create_user(username="10496290014", email="10496290014@partidoverde.org.co", password="10496290014")
-usuario = Militante.objects.create_user(username="10496290015", email="10496290015@partidoverde.org.co", password="10496290015")
-usuario = Militante.objects.create_user(username="10496290016", email="10496290016@partidoverde.org.co", password="10496290016")
-usuario = Militante.objects.create_user(username="10496290017", email="10496290017@partidoverde.org.co", password="10496290017")
-usuario = Militante.objects.create_user(username="10496290018", email="10496290018@partidoverde.org.co", password="10496290018")
+from asamblea.models import Militante, Plancha
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+
+usuario = Militante.objects.create_user(username="1049629007", email="1049629007@partidoverde.org.co", password="1049629007", plancha=plancha)
+usuario = Militante.objects.create_user(username="1049629008", email="1049629008@partidoverde.org.co", password="1049629008", plancha=plancha)
+usuario = Militante.objects.create_user(username="1049629009",  email="1049629009@partidoverde.org.co", password="1049629009", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290010", email="10496290010@partidoverde.org.co", password="10496290010", plancha=plancha2)
+usuario = Militante.objects.create_user(username="10496290011", email="10496290011@partidoverde.org.co", password="10496290011", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290012", email="10496290012@partidoverde.org.co", password="10496290012", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290013", email="10496290013@partidoverde.org.co", password="10496290013", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290014", email="10496290014@partidoverde.org.co", password="10496290014", plancha=plancha2)
+usuario = Militante.objects.create_user(username="10496290015", email="10496290015@partidoverde.org.co", password="10496290015", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290016", email="10496290016@partidoverde.org.co", password="10496290016", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290017", email="10496290017@partidoverde.org.co", password="10496290017", plancha=plancha)
+usuario = Militante.objects.create_user(username="10496290018", email="10496290018@partidoverde.org.co", password="10496290018", plancha=plancha2)
 
 exit()
 
@@ -177,3 +180,16 @@ exit()
 
 
 
+
+
+              
+                                    {% for plancha, miembros in grupos.items %}
+                                        <!-- <h2>{{ plancha }}</h2> -->
+                                        {% if plancha == opcion.name  %}
+                                            <ul>
+                                                {% for miembro in miembros %}
+                                                    <li>{{ miembro.username }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    {% endfor %}
