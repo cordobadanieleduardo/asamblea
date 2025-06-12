@@ -91,7 +91,6 @@ exit()
 py manage.py shell
 
 from asamblea.models import Militante
-from asamblea.views import enviar_email_activacion
 usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006", is_active= False)
 usuario
 exit()
@@ -171,7 +170,6 @@ usuario
 exit()
 
 python manage.py shell
-
 from asamblea.models import Militante
 usuario = Militante.objects.create_user(username="1007717602", email="16estebanmarquez@gmail.com", password="1007717602", is_active= False)
 usuario
