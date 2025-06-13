@@ -155,14 +155,20 @@ exit()
 
 
 py manage.py shell
+from asamblea.models import Plancha, Militante
+militante= Militante.objects.get(username='daniel')
+plancha = Plancha.objects.create(name='Plancha Uno',uc=militante)
+plancha2 = Plancha.objects.create(name='Plancha Dos',uc=militante)
+exit()
 
+
+py manage.py shell
 from asamblea.models import Militante, Plancha, Puesto
 plancha = Plancha.objects.get(id=1)
 plancha2 = Plancha.objects.get(id=2)
 puesto = Puesto.objects.get(id=1)
 puesto2 = Puesto.objects.get(id=2)
-
-usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@partidoverde.org.co", password="1049629006")
+usuario = Militante.objects.create_user(username="1049629006", email="desarrollotecnologico@alianzaverde.org.co", password="1049629006")
 usuario = Militante.objects.create_user(username="1049629007", email="1049629007@partidoverde.org.co", password="1049629007", plancha=plancha)
 usuario = Militante.objects.create_user(username="1049629008", email="1049629008@partidoverde.org.co", password="1049629008", plancha=plancha)
 usuario = Militante.objects.create_user(username="1049629009",  email="1049629009@partidoverde.org.co", password="1049629009", plancha=plancha, location= puesto )
@@ -175,10 +181,16 @@ usuario = Militante.objects.create_user(username="10496290015", email="104962900
 usuario = Militante.objects.create_user(username="10496290016", email="10496290016@partidoverde.org.co", password="10496290016", plancha=plancha)
 usuario = Militante.objects.create_user(username="10496290017", email="10496290017@partidoverde.org.co", password="10496290017", plancha=plancha)
 usuario = Militante.objects.create_user(username="10496290018", email="10496290018@partidoverde.org.co", password="10496290018", plancha=plancha2)
-
 exit()
 
 
+
+python manage.py shell
+from asamblea.models import Militante
+usuario = Militante.objects.create_user(username="daniel", email="desarrollotecnologico@partidoverde.org.co", password="daniel", is_active= True, is_staff= True, is_superuser= True)
+usuario = Militante.objects.create_user(username="john", email="sistemas@partidoverde.org.co", password="john", is_active= True, is_staff= True, is_superuser= True)
+
+exit()
 
 
 
