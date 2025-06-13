@@ -1,42 +1,19 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-from django.dispatch import receiver
-
 from bases.models import ClaseModelo
 
-
 class Puesto(models.Model):
-
-    # Relationships
-    indicador = models.IntegerField(default=0)
-
-    # Fields
-    idpuesto = models.CharField(max_length=30, primary_key=True)
-    cod_puesto = models.CharField(max_length=30)
-    puesto_name = models.CharField(max_length=100)
-    no_mesas = models.IntegerField()
-    cod_zona = models.CharField(max_length=30)
-    cod_comuna = models.CharField(max_length=30)
-    cod_mun = models.CharField(max_length=30)
-    mun_name = models.CharField(max_length=30)
-    comuna_name = models.CharField(max_length=30)
-    cod_dpto = models.CharField(max_length=30)
-    dpto_name = models.CharField(max_length=30)
-    curules_asamblea = models.IntegerField(default=0)
-    curules_concejo = models.IntegerField(default=0)
-    curules_jal = models.IntegerField(default=0)
-    potencial_m = models.IntegerField()
-    potencial_h = models.IntegerField()
-
+    comuna_name = models.CharField(max_length=30, verbose_name='Localidad')
+    mun_name = models.CharField(max_length=30, verbose_name='Municipio')
+    dpto_name = models.CharField(max_length=30, verbose_name='Departamento')
 
     class Meta:
         verbose_name="Puesto"
         verbose_name_plural="Puestos"
 
     def __str__(self):
-        return f"{self.idpuesto},P:{self.puesto_name},M:{self.mun_name},D:{self.dpto_name} "
+        return f"{self.pk} - {self.dpto_name} - {self.mun_name} - {self.comuna_name}"
 
 class Lista(models.Model):
     name=models.CharField(max_length=120)
@@ -53,7 +30,7 @@ class Lista(models.Model):
 class Plancha(ClaseModelo):
     name=models.CharField(max_length=120)
     mostrar=models.BooleanField(default=True)
-    imagen=models.ImageField(upload_to='opciones_voto/')
+    imagen=models.ImageField(upload_to='opciones_voto/',null=True,blank=True, verbose_name='Imagen')
     fecha_inicio = models.DateTimeField(null=True, blank=True)
     fecha_fin = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(Puesto,on_delete=models.CASCADE,null=True,blank=True, verbose_name='Ubicación')
@@ -88,7 +65,8 @@ class Militante(AbstractUser):
     gCHOICES=(("M","Masculino"), ("F","Femenino"), ("O","Otro"),)
     sex=models.CharField(max_length=10,choices=gCHOICES,verbose_name='Género',null=True,blank=True)
     location = models.ForeignKey(Puesto,on_delete=models.CASCADE,null=True,blank=True, verbose_name='Ubicación')
-
+    is_active = models.BooleanField(default=False,verbose_name='Es Activo')
+    
     class Meta:
         verbose_name_plural="Militantes"
         verbose_name="Militante"
@@ -108,10 +86,10 @@ class Registro(models.Model):
     def __str__(self):
         return self.columna1
 
-class EmailEnviado(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    count = models.IntegerField()
-    fc = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+# class EmailEnviado(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     count = models.IntegerField()
+#     fc = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
-    def __str__(self):
-        return f"{self.user} - {self.count}"
+#     def __str__(self):
+#         return f"{self.user} - {self.count}"

@@ -204,8 +204,8 @@
         <section class="py-5 text-center container">
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Votación CMJ</h1>
-                    <p class="lead text-body-secondary"> - Municipio - </p>
+                    <h1 class="fw-light">Votación Asambleas CMJ/CLJ</h1>
+                    <p class="lead text-body-secondary"> {{departamento}}  {{municipio}}  {{localidad}} </p>
                     <!-- <p>  -->
                     <!-- <form method="POST" onsubmit="return confirmarVoto()"> -->
                     <!-- {#% csrf_token %#} -->
@@ -232,7 +232,7 @@
                                 <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="50"
                                     preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
 
-                                <!-- <image href="{{ opcion.imagen.url }}" alt="{{ opcion.name }}" x="10" y="10" width="100%" height="100%" /> -->
+                                <!-- <image href="{#{ opcion.imagen.url }#}" alt="{#{ opcion.name }#}" x="10" y="10" width="100%" height="100%" /> -->
                                 <title>{{ opcion.name }}</title>
                                     <rect width="100%" height="100%" fill="#55595c"></rect>
                                     <text x="50%" y="50%" fill="#3CC920FF" dy=".3em">{{ opcion.name }}</text>
@@ -245,39 +245,28 @@
                                     height="100%" onclick="activarBoton()" /> -->
                                 <div onclick="activarBoton()">
                                     {% for plancha, miembros in grupos.items %}
-                                        {% if plancha == opcion.name  %}
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Nombres y Apellidos</th>
-                                                        <th scope="col">Usuario</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                            
-
-
-                                                    {% for miembro in miembros %}
-                                                    <tr>
-
-                                                            <th scope="row">{{ miembro.position }}</th>
-                                                            <td>{{ miembro.get_short_name }}</td>
-                                                            <td>{{ miembro.username }}</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                        {% if plancha == opcion.name %}
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nombres y Apellidos</th>
+                                                    <!-- <th scope="col">Usuario</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for miembro in miembros %}
+                                                <tr>
+                                                    <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th>
+                                                    <td>{{ miembro.get_full_name }}</td>
+                                                    <!-- <td>{{ miembro.username }}</td> -->
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                         {% endif %}
                                     {% endfor %}
-
-                             
-
                                 </div>
-
-
-
-
                                 <!-- <div class="card-body"> -->
                                     <!-- <p class="card-text"> {{ opcion.name }}.</p> -->
                                     <!-- <div class="d-flex justify-content-between align-items-center">
@@ -298,7 +287,7 @@
                                     d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
                             </svg>
                         </button> -->
-
+                        {% if mostrarBotonVotar  %}
                         <div class="opcion_boton col-lg-6 col-xxl-4 my-5 mx-auto d-grid gap-2"> 
                                 <button class="btn btn-success rounded-pill btn-lg px-3 my-2" type="submit" id="boton-votar" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
@@ -306,6 +295,12 @@
                                     </svg>
                                    Votar
                                 </button> 
+                        {% else %}
+                        <div class="opcion_boton">
+                            <p> No se encontraron planchas</p>
+                        </div>
+
+                        {% endif %}
                         </div>
                     </div>
                 </div>

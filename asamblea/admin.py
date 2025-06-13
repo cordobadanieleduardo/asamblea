@@ -57,7 +57,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('is_staff','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'location', 'sex', 'is_active','plancha','send_email','must_change_password','position','list',)}
+            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'location', 'sex', 'plancha','send_email','must_change_password','position','list',)}
         ),
     )
     
@@ -97,7 +97,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
 
 class PlanchaAdmin(admin.ModelAdmin):
-    list_display =  ('name', 'mostrar', 'fc',)
+    list_display =  ('name','location', 'mostrar', 'fc',)
     readonly_fields = ('fc', 'fm',)
     
 

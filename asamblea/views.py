@@ -12,6 +12,9 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.db.models import Count
+from collections import defaultdict
+from django.db.models import Case, When, Value, IntegerField
+
 
 from django.template import loader
 import csv
@@ -145,8 +148,6 @@ def subir_csv(request):
 
     return render(request, 'file_up/subir_csv.html')
 
-from collections import defaultdict
-
 @login_required
 def votar(request):
     # Verificar si el usuario ya votó
@@ -154,29 +155,57 @@ def votar(request):
         # return HttpResponse("Ya has votado.")
         return HttpResponseRedirect(reverse('asamblea:resultado'))
 
-    opciones = Plancha.objects.filter(mostrar=True).order_by('-name')
+    # print('user', request.user.location)
+    # opciones = Plancha.objects.filter(
+    #     mostrar=True,
+    #     location=request.user.location,
+    # ).order_by('id')
+    
+    opciones = Plancha.objects.none()  # Retorna un queryset vacío
+    mostrarBotonVotar = False
+    if request.user.location:
+        opciones = Plancha.objects.filter(
+            mostrar=True,
+            location=request.user.location
+        ).order_by('id')
+    
     grupos = defaultdict(list)
     for o in opciones:
-        print('plancha ', o.name)
-        militantes = Militante.objects.filter(plancha_id = o.pk)
-        for u in militantes:
-            print('username ', u.username)
-            grupos[o.name].append(u)
+        # militantes = Militante.objects.filter(plancha_id = o.pk).order_by('position')  # Ordenar         
+        militantes = Militante.objects.filter(plancha_id=o.pk).annotate(
+            prioridad=Case(
+                When(position=0, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        ).order_by('prioridad', 'position')
 
-        # if usuarios is None:
-        #     usuarios= Militante.objects.filter(plancha_id = o.pk)
-        # usuarios = None
+        for u in militantes:
+            grupos[o.name].append(u)
+        mostrarBotonVotar= True
+
+
     usuario_por_plancha = list(grupos.values())
     grupo_usuario_por_plancha = list(grupos.keys())
+    
+    departamento = ''
+    municipio = ''
+    localidad = ''
+    
+    if request.user.location:
+        departamento = request.user.location.dpto_name
+        municipio = request.user.location.mun_name
+        localidad = request.user.location.comuna_name
 
-    print('Plancha Dos')
-    print(grupos.get('Plancha Dos'))
+    # print('Plancha Dos')
+    # print(grupos.get('Plancha Dos'))
     
     
-    print('Plancha Uno')
-    print(grupos.get('Plancha Uno'))
+    # print('Plancha Uno')
+    # print(grupos.get('Plancha Uno'))
 
     # print(grupo_usuario_por_plancha)
+               
 
     if request.method == 'POST':
         opcion_id = request.POST.get('opcion_id')
@@ -194,7 +223,11 @@ def votar(request):
                   {'opciones': opciones,
                    'usuario_por_plancha':usuario_por_plancha,
                    'grupo_usuario_por_plancha': grupo_usuario_por_plancha,
-                   'grupos': dict(grupos)
+                   'grupos': dict(grupos),
+                   'departamento':departamento,
+                    'municipio':municipio,
+                    'localidad':localidad,
+                    'mostrarBotonVotar':mostrarBotonVotar,
                    })
 
 @login_required
