@@ -318,11 +318,34 @@ def resultado(request):
     for item in conteo:
         item['cociente'] = int(item['cociente'])
 
- 
     datos=(conteo)
     print(conteo)
     print()
     print(conteo.count())
+
+    # conformacion de listas 
+    
+    opciones=Plancha.objects.none()  # Retorna un queryset vacío
+    grupos=defaultdict(list)
+    if request.user.location:
+        opciones=Plancha.objects.filter(
+            mostrar=True,
+            location=request.user.location
+        ).order_by('id')
+    
+    for o in opciones:
+        militantes=Militante.objects.filter(plancha_id=o.pk
+            ).annotate(
+                prioridad=Case(
+                    When(position=0, then=Value(1)),
+                    default=Value(0),
+                    output_field=IntegerField())
+        ).order_by('prioridad', 'position')
+
+        for u in militantes:
+            grupos[o.name].append(u)
+
+
 
     labels=[d['opcion__name'] for d in datos]
     valores=[d['total_votos'] for d in datos]
@@ -338,4 +361,5 @@ def resultado(request):
         'curules':curules,
         'cociente_electoral':cociente_electoral,
         'votos_blanco':votos_blanco,
+        'grupos': dict(grupos),
     })

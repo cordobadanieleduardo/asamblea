@@ -68,6 +68,7 @@
         <h1>📊 Resultados de la Votación</h1>
         <h2>{{departamento}} {{municipio}} {{localidad}} </h2>
         <h1>Curules: {{curules}}</h1>
+        <h1>Cociente electoral: {{cociente_electoral | floatformat:2 }}</h1>
         <h2>Tabla de Resultados</h2>
         <table>
             <thead>
@@ -98,6 +99,30 @@
 
         <!-- <h2>Cociente electoral: <span style="color: rgb(80, 177, 131);">{{cociente_electoral}}</span> </h2>  -->
 
+      
+
+         {% for plancha, miembros in grupos.items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombres y Apellidos</th>
+                        <!-- <th scope="col">Usuario</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for miembro in miembros %}
+                    <tr>
+                        <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th>
+                        <td>{{ miembro.get_full_name }}</td>
+                        <!-- <td>{{ miembro.username }}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          
+        {% endfor %}
+        
         <br>
         <br>
         <br>
