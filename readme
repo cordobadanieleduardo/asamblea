@@ -154,7 +154,7 @@ exit()
 
 
 
-py manage.py shell
+python manage.py shell
 from asamblea.models import Plancha, Militante
 militante= Militante.objects.get(username='daniel')
 plancha = Plancha.objects.create(name='Plancha Uno',uc=militante)
@@ -163,6 +163,7 @@ exit()
 
 
 py manage.py shell
+python manage.py shell
 from asamblea.models import Militante, Plancha, Puesto
 plancha = Plancha.objects.get(id=1)
 plancha2 = Plancha.objects.get(id=2)
@@ -183,6 +184,322 @@ usuario = Militante.objects.create_user(username="10496290017", email="104962900
 usuario = Militante.objects.create_user(username="10496290018", email="10496290018@partidoverde.org.co", password="10496290018", plancha=plancha2)
 exit()
 
+
+
+
+
+py manage.py shell
+python manage.py shell
+from asamblea.models import Militante, Plancha, Puesto
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+puesto = Puesto.objects.get(id=1)
+puesto2 = Puesto.objects.get(id=2)
+usuario = Militante.objects.create_user(username="10496290020", email="10496290020@alianzaverde.org.co", password="10496290020")
+usuario = Militante.objects.create_user(username="10496290021", email="10496290021@partidoverde.org.co", password="10496290021", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290022", email="10496290022@partidoverde.org.co", password="10496290022", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290023", email="10496290023@partidoverde.org.co", password="10496290023", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290024", email="10496290024@partidoverde.org.co", password="10496290024", plancha=plancha2, location= puesto )
+usuario = Militante.objects.create_user(username="10496290025", email="10496290025@partidoverde.org.co", password="10496290025", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290026", email="10496290026@partidoverde.org.co", password="10496290026", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290027", email="10496290027@partidoverde.org.co", password="10496290027", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290028", email="10496290028@partidoverde.org.co", password="10496290028", plancha=plancha2, location= puesto )
+usuario = Militante.objects.create_user(username="10496290029", email="10496290029@partidoverde.org.co", password="10496290029", plancha=plancha,  location= puesto )
+usuario = Militante.objects.create_user(username="10496290030", email="10496290030@partidoverde.org.co", password="10496290030", plancha=plancha, location= puesto )
+exit()
+
+
+
+python manage.py shell
+from asamblea.models import Militante, Plancha, Puesto
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+puesto = Puesto.objects.get(id=1)
+puesto2 = Puesto.objects.get(id=2)
+usuario = Militante.objects.create_user(username="10496290031", email="10496290031@partidoverde.org.co", password="10496290021", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290032", email="10496290032@partidoverde.org.co", password="10496290022", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290033", email="10496290033@partidoverde.org.co", password="10496290023", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290034", email="10496290034@partidoverde.org.co", password="10496290024", plancha=plancha2, location= puesto )
+usuario = Militante.objects.create_user(username="10496290035", email="10496290035@partidoverde.org.co", password="10496290025", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290036", email="10496290036@partidoverde.org.co", password="10496290026", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290037", email="10496290037@partidoverde.org.co", password="10496290027", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290038", email="10496290038@partidoverde.org.co", password="10496290028", plancha=plancha2, location= puesto )
+usuario = Militante.objects.create_user(username="10496290039", email="10496290039@partidoverde.org.co", password="10496290029", plancha=plancha,  location= puesto )
+usuario = Militante.objects.create_user(username="10496290040", email="10496290040@partidoverde.org.co", password="10496290030", plancha=plancha, location= puesto )
+exit()
+
+
+
+python manage.py shell
+from asamblea.models import Militante, Plancha, Puesto
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+puesto = Puesto.objects.get(id=1)
+puesto2 = Puesto.objects.get(id=2)
+usuario = Militante.objects.create_user(username="10496290041", email="10496290041@partidoverde.org.co", password="10496290021", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290042", email="10496290042@partidoverde.org.co", password="10496290022", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290043", email="10496290043@partidoverde.org.co", password="10496290023", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290044", email="10496290044@partidoverde.org.co", password="10496290024", plancha=plancha2, location= puesto )
+usuario = Militante.objects.create_user(username="10496290045", email="10496290045@partidoverde.org.co", password="10496290025", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290046", email="10496290046@partidoverde.org.co", password="10496290026", plancha=plancha, location= puesto )
+usuario = Militante.objects.create_user(username="10496290047", email="10496290047@partidoverde.org.co", password="10496290027", plancha=plancha, location= puesto )
+exit()
+
+
+
+
+
+py manage.py shell
+python manage.py shell
+from asamblea.models import Voto, Plancha
+mili = Militante.objects.get(username = '10496290020')
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290021')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290022')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290023')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290024')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290025')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290026')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290026')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290027')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290028')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290029')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290030')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+
+from asamblea.models import Voto, Plancha
+mili = Militante.objects.get(username = '10496290020')
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+
+
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290031')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290032')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290033')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290034')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290035')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290036')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290036')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290037')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290038')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290039')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290040')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+
+
+
+from asamblea.models import Voto, Plancha
+mili = Militante.objects.get(username = '10496290020')
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290031')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290032')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290033')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290034')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290035')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290036')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290036')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290037')
+
+
+
+from asamblea.models import Voto, Plancha
+plancha = Plancha.objects.get(id=1)
+plancha2 = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '10496290041')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290042')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290043')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290044')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290045')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290046')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290047')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+exit()
+
+
+
+python manage.py shell
+from asamblea.models import Militante, Plancha, Puesto
+puesto = Puesto.objects.get(id=1)
+usuario = Militante.objects.create_user(username="10496290050", email="10496290050@partidoverde.org.co", password="10496290021",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290051", email="10496290051@partidoverde.org.co", password="10496290022",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290052", email="10496290052@partidoverde.org.co", password="10496290023",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290053", email="10496290053@partidoverde.org.co", password="10496290024",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290054", email="10496290054@partidoverde.org.co", password="10496290025",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290055", email="10496290055@partidoverde.org.co", password="10496290026",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290056", email="10496290056@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290057", email="10496290057@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290058", email="10496290058@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290059", email="10496290059@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290060", email="10496290060@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290061", email="10496290061@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290062", email="10496290062@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290063", email="10496290063@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290064", email="10496290064@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290065", email="10496290065@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290066", email="10496290066@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290067", email="10496290067@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290068", email="10496290068@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290069", email="10496290069@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290070", email="10496290070@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290071", email="10496290071@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290072", email="10496290072@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290073", email="10496290073@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290074", email="10496290074@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290075", email="10496290075@partidoverde.org.co", password="10496290027",  location= puesto )
+
+usuario = Militante.objects.create_user(username="10496290076", email="10496290076@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290077", email="10496290077@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290078", email="10496290078@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290079", email="10496290079@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290080", email="10496290080@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290081", email="10496290081@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290082", email="10496290082@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290083", email="10496290083@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290084", email="10496290084@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290085", email="10496290085@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290086", email="10496290086@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290087", email="10496290087@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290088", email="10496290088@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290089", email="10496290089@partidoverde.org.co", password="10496290027",  location= puesto )
+usuario = Militante.objects.create_user(username="10496290090", email="10496290090@partidoverde.org.co", password="10496290027",  location= puesto )
+
+
+
+
+
+exit()
+
+
+
+
+python manage.py shell
+from asamblea.models import Voto, Plancha
+plancha2 = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '10496290050')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290051')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290052')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290053')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290054')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290055')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290056')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290057')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290058')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290059')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290060')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290060')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290061')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290062')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290063')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290064')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+
+
+plancha2 = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '10496290065')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290066')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290067')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290068')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290069')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290070')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290071')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290072')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290073')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290074')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290075')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290076')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290077')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290078')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290079')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290080')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290081')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290082')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290083')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290084')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290085')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290086')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+
+
+
+
+
+
+exit()
 
 
 python manage.py shell

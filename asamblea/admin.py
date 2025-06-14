@@ -77,8 +77,8 @@ class CustomUserAdmin(BaseUserAdmin):
         print("changelist_view")
         if request.method == 'POST' and request.FILES.get('archivo_excel'):
             return self.importar_ventanilla_unica(request)
-        elif request.method == 'POST':
-            return self.exportar_excel(request)
+        # elif request.method == 'POST':
+        #     return self.exportar_excel(request)
         return super().changelist_view(request, extra_context)
     
     def exportar_excel(self, request, queryset):
@@ -93,7 +93,7 @@ class CustomUserAdmin(BaseUserAdmin):
         return response
 
     importar_ventanilla_unica.short_description = "Importar Ventanilla Unica"
-    exportar_excel.short_description = "Exportar a Excel"
+    # exportar_excel.short_description = "Exportar a Excel"
 
 
 class PlanchaAdmin(admin.ModelAdmin):

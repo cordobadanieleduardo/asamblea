@@ -3,13 +3,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from bases.models import ClaseModelo
 
-
 class Puesto(models.Model):
     comuna_name = models.CharField(max_length=30, verbose_name='Localidad')
     mun_name = models.CharField(max_length=30, verbose_name='Municipio')
     dpto_name = models.CharField(max_length=30, verbose_name='Departamento')
-    curulCHOICES=((8,"8"), (14,"14"),(17,"17"),)
-    num_curul=models.IntegerField(default=8,choices=curulCHOICES,verbose_name='¿N° Curules?')
 
     class Meta:
         verbose_name="Puesto"
@@ -19,7 +16,7 @@ class Puesto(models.Model):
         return f"{self.pk} - {self.dpto_name} - {self.mun_name} - {self.comuna_name}"
 
 class Lista(models.Model):
-    name=models.CharField(max_length=120, verbose_name='Nombre')
+    name=models.CharField(max_length=120)
     mostrar=models.BooleanField(default=True)
 
     class Meta:
@@ -31,8 +28,8 @@ class Lista(models.Model):
         return f"{self.name}"
 
 class Plancha(ClaseModelo):
-    name=models.CharField(max_length=120, verbose_name='Nombre')
-    mostrar=models.BooleanField(default=True, verbose_name='Visualizar')
+    name=models.CharField(max_length=120)
+    mostrar=models.BooleanField(default=True)
     imagen=models.ImageField(upload_to='opciones_voto/',null=True,blank=True, verbose_name='Imagen')
     fecha_inicio = models.DateTimeField(null=True, blank=True)
     fecha_fin = models.DateTimeField(null=True, blank=True)
@@ -88,3 +85,11 @@ class Registro(models.Model):
 
     def __str__(self):
         return self.columna1
+
+# class EmailEnviado(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     count = models.IntegerField()
+#     fc = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+
+#     def __str__(self):
+#         return f"{self.user} - {self.count}"
