@@ -258,7 +258,7 @@
                                                 {% for miembro in miembros %}
                                                 <tr>
                                                     <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th>
-                                                    <td>{{ miembro.get_full_name }}</td>
+                                                    <td>{% if miembro.get_full_name %} {{ miembro.get_full_name }} {% else %} {{ miembro.username }} {% endif %} </td>
                                                     <!-- <td>{{ miembro.username }}</td> -->
                                                 </tr>
                                                 {% endfor %}

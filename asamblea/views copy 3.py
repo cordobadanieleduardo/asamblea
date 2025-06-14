@@ -249,15 +249,12 @@ def resultado(request):
     departamento=''
     municipio=''
     localidad=''
-    fecha = ''
     curules=1
     
     if request.user.location:
         departamento=request.user.location.dpto_name
         municipio=request.user.location.mun_name
         localidad=request.user.location.comuna_name
-        fecha=request.user.location.fecha
-
         # curules=Puesto.objects.filter(dpto_name=departamento,mun_name=municipio,comuna_name=localidad).first().num_curul
         curules=Voto.objects.filter(opcion__location=request.user.location).first().opcion.location.num_curul
         
@@ -268,8 +265,12 @@ def resultado(request):
                 total_votos=Count('id'),                
             ).order_by('-total_votos')
     
+    l=request.user.location
+    # print(f"Localizacion : {l}")
+    print(f"curules : {curules}")
 
     votos_blanco = 2
+    
     
     sum_votos=sum(item['total_votos'] for item in conteo)
     sum_votos = sum_votos + votos_blanco
@@ -277,8 +278,35 @@ def resultado(request):
     
     
     print(f"Total de votos: {sum_votos}")
+ 
     print(f"Votos blanco: {votos_blanco}")
-    print(f"Curules: {curules}")
+
+ 
+    # conteo=conteo.values('opcion__name'
+    #         ).annotate(
+    #             total_votos=Count('id'),
+    #             cociente=F('total_votos') * 1.0 / cociente_electoral,  # Evita errores de tipo
+    #             # residuo= F('cociente') % 1
+    #              residuo=ExpressionWrapper((F('total_votos') / cociente_electoral) % 1, output_field=FloatField())  # Corrección aquí
+                                 
+    #         ).order_by('-total_votos')
+ 
+ 
+    # conteo = conteo.values('opcion__name').annotate(
+    #     total_votos=Count('id'),
+    #     cociente=ExpressionWrapper(Count('id') // cociente_electoral, output_field=FloatField()),  # División decimal
+    #     residuo=F('total_votos') % sum_votos
+    #     # residuo= ExpressionWrapper((Count('id') / cociente_electoral)- int(Count('id') / cociente_electoral), output_field=FloatField())    # Módulo
+    # ).order_by('-total_votos')
+
+
+    # conteo = conteo.values('opcion__name').annotate(
+    #     total_votos=Count('id'),
+    #     cociente=ExpressionWrapper(Count('id') / cociente_electoral, output_field=FloatField()),  # División decimal
+    #     residuo=ExpressionWrapper((F('total_votos') / sum_votos) - F('total_votos') / sum_votos, output_field=FloatField())  # La clave está aquí
+    # ).order_by('-total_votos')
+
+
 
     conteo = conteo.values('opcion__name').annotate(
         total_votos=Count('id'),
@@ -291,8 +319,9 @@ def resultado(request):
         item['cociente'] = int(item['cociente'])
 
     datos=(conteo)
-    # print(conteo)
-    # print(conteo.count())
+    print(conteo)
+    print()
+    print(conteo.count())
 
     # conformacion de listas 
     
@@ -323,59 +352,11 @@ def resultado(request):
     print('labels',labels)
     print('valores',valores)
 
-    # for key in dict(grupos):
-    #     # print(key, "->", grupos[key])
-    #     print(key)
-    
-    conformacion_lista=[]
-    if(labels and len(labels)>0):
-        lista = [ x.get_full_name() for x in grupos[labels[0]]]
-        # print('Lista',lista)
-        # Verificar si existe una posición específica antes de acceder
-        if lista and 0 <= 0 < len(lista):  # Se evalúa como True si no está vacía
-            # print('Cabeza de lista ',lista[0])
-            conformacion_lista.append(lista[0])
-        if lista and 0 <= 1 < len(lista):  # Se evalúa como True si no está vacía
-            # print('Cabeza de lista 2 ',lista[1])
-            conformacion_lista.append(lista[1])
-      
-    # print( ' sgunda lista '.strip())
-    # print('lllll', labels[1:])
-    for l in labels[1:]:
-        lista = [ x.get_full_name() for x in grupos[l]]        
-        # Verificar si existe una posición específica antes de acceder
-        if lista and 0 <= 0 < len(lista):  # Se evalúa como True si no está vacía
-            conformacion_lista.append(lista[0])
+    listas=[d['opcion__name'] for d in grupos.keys()]
 
-    # print( ' tercer  '.strip())
-    
-    lista_uno = []
-    if(labels and len(labels)>0 and 0 <= 0 < len(labels)):
-        lista_uno = [ x.get_full_name() for x in grupos[labels[0]]]
-        lista_uno =  lista_uno[2:]
-        # conformacion_lista.append(lista_uno[0])
-    # print( ' lista uno  '.strip(),  lista_uno)
-    
-    lista_dos = []
-    if(labels and len(labels)>0 and 0 <= 1 < len(labels)):
-        lista_dos = [ x.get_full_name() for x in grupos[labels[1]]]
-        lista_dos =  lista_dos[1:]
-        # conformacion_lista.append(lista_dos[0])
+    print('listas',listas)
+    print('valores',valores)
 
-    # print( ' lista dos  '.strip(),  lista_dos)
-        
-    # Intercalar listas
-    lista_intercalada = [item for pair in zip(lista_uno, lista_dos) for item in pair]
-
-    # print('lista_intercalada', lista_intercalada)
-
-    # suma_listas = []
-    # # Imprimir posición e ítem
-    for i, item in enumerate(conformacion_lista + lista_intercalada):
-        print(f"Posición {i+1}: {item}")
-
-    suma_listas = [(i+1, item) for i, item in enumerate(conformacion_lista + lista_intercalada)]
-    
     return render(request, 'votar/resultado.html', {
         'labels': labels,
         'valores': valores,
@@ -384,10 +365,8 @@ def resultado(request):
         'departamento':departamento,
         'municipio':municipio,
         'localidad':localidad,
-        'fecha':fecha,
         'curules':curules,
         'cociente_electoral':cociente_electoral,
         'votos_blanco':votos_blanco,
         'grupos': dict(grupos),
-        'suma_listas': suma_listas
     })

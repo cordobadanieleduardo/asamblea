@@ -66,6 +66,8 @@
         <a href="/">Volver al inicio</a>
 
         <h1>📊 Resultados de la Votación</h1>
+        <p>Fecha de votación {{fecha|date:"d M Y"}}</p>
+
         <h2>{{departamento}} {{municipio}} {{localidad}} </h2>
         <h1>Curules: {{curules}}</h1>
         <h1>Cociente electoral: {{cociente_electoral | floatformat:2 }}</h1>
@@ -85,43 +87,67 @@
                     <td>{{ v.opcion__name }}</td>
                     <td>{{ v.total_votos }}</td>
                     <td>{{ v.cociente |floatformat:-0}}</td>
-                    <td>{{v.residuo |floatformat:3}}</td>
+                    <td>{{v.residuo |floatformat:2}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
+        <h2>Votos en blanco: <span style="color: rgb(1, 255, 192);">{{votos_blanco}}</span> </h2> 
         <h2>Total de válidos: <span style="color: rgb(255, 1, 1);">{{total_votos}}</span> </h2> 
 
-        <h2>Votos en blanco: <span style="color: rgb(1, 255, 192);">{{votos_blanco}}</span> </h2> 
 
         <!-- <h2>Votos válidos: <span style="color: rgb(80, 177, 131);">{{total_votos}}</span> </h2>  -->
 
         <!-- <h2>Cociente electoral: <span style="color: rgb(80, 177, 131);">{{cociente_electoral}}</span> </h2>  -->
 
-      
+        <br>
 
-         {% for plancha, miembros in grupos.items %}
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombres y Apellidos</th>
-                        <!-- <th scope="col">Usuario</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for miembro in miembros %}
-                    <tr>
-                        <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th>
-                        <td>{{ miembro.get_full_name }}</td>
-                        <!-- <td>{{ miembro.username }}</td> -->
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <h2>Conformación final de la lista</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombres y Apellidos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i,item in suma_listas %}
+                <tr>
+                    <th scope="row"> {{ i }} </th>
+                    <td>{{ item }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
           
-        {% endfor %}
+        {% comment %}
+
+            <br>
+
+            {% for plancha, miembros in grupos.items %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombres y Apellidos</th>
+                            <!-- <th scope="col">Usuario</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for miembro in miembros %}
+                        <tr>
+                            <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th>
+                            <td>{% if miembro.get_full_name %} {{ miembro.get_full_name }} {% else %} {{ miembro.username }} {% endif %} </td>
+                            <!-- <td>{{ miembro.username }}</td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            
+            {% endfor %}
+
+        {% endcomment %}
         
         <br>
         <br>

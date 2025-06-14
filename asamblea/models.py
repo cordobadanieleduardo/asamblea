@@ -10,6 +10,7 @@ class Puesto(models.Model):
     dpto_name = models.CharField(max_length=30, verbose_name='Departamento')
     curulCHOICES=((8,"8"), (14,"14"),(17,"17"),)
     num_curul=models.IntegerField(default=8,choices=curulCHOICES,verbose_name='¿N° Curules?')
+    fecha = models.DateTimeField(verbose_name='F. votación',null=True, blank=True)
 
     class Meta:
         verbose_name="Puesto"
