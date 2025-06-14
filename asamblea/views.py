@@ -267,16 +267,34 @@ def resultado(request):
             ).annotate(
                 total_votos=Count('id'),                
             ).order_by('-total_votos')
+    # print('conteo ', conteo)
+            
+    # plancha=Plancha.objects.filter(mostrar=True,location=request.user.location).order_by('id')
+    # militantes=Militante.objects.filter(plancha=plancha)
+    militantes_habilitados=Militante.objects.filter(location=request.user.location,is_staff=False)
+    total_mili_por_ubicion= militantes_habilitados.count()
     
 
-    votos_blanco = 2
+    lista_sufragio = [ x.user.username for x in Voto.objects.filter(opcion__location=request.user.location)]
+    
+    militantes_no_votaron=militantes_habilitados.exclude(username__in=lista_sufragio)
+
+    # militantes_en_blanco= militantes_en_blanco.exclude()
+    print('total_mili_por_ubicion ',total_mili_por_ubicion)
+    print('militantes_no_votaron ',militantes_no_votaron.count())
+
+    # print('lista_voto ',lista_voto)
+    print('lista_voto ',len(lista_sufragio))
+
+
+    votos_blanco = militantes_no_votaron.count()
     
     sum_votos=sum(item['total_votos'] for item in conteo)
-    sum_votos = sum_votos + votos_blanco
-    cociente_electoral=sum_votos / curules
+    total_votos_validos=sum_votos + votos_blanco
+    cociente_electoral=total_votos_validos / curules
     
     
-    print(f"Total de votos: {sum_votos}")
+    print(f"Total de votos: {total_votos_validos}")
     print(f"Votos blanco: {votos_blanco}")
     print(f"Curules: {curules}")
 
@@ -380,7 +398,7 @@ def resultado(request):
         'labels': labels,
         'valores': valores,
         'datos': conteo,
-        'total_votos':sum_votos,
+        'total_votos':total_votos_validos,
         'departamento':departamento,
         'municipio':municipio,
         'localidad':localidad,

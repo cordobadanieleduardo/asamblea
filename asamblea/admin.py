@@ -38,7 +38,7 @@ class CustomUserAdmin(BaseUserAdmin):
     list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location','sex','plancha','position','list','votos_emitidos',)  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name',)  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
-    list_filter = ('is_staff', 'is_active','plancha',)  # Filtros en la barra lateral
+    list_filter = ('is_staff', 'is_active','plancha','location',)  # Filtros en la barra lateral
     actions = ['exportar_excel']
     form = UsuarioAdminForm
     change_list_template = 'admin/importar_vu.html'
