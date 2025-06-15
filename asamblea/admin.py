@@ -100,11 +100,16 @@ class PlanchaAdmin(admin.ModelAdmin):
     list_display =  ('name','location', 'mostrar', 'fc',)
     readonly_fields = ('fc', 'fm',)
     
-
+class VotoAdmin(admin.ModelAdmin):
+    model = Voto
+    list_display =  ('user__username','opcion',)
+    list_filter = ( 'opcion',) 
+    # readonly_fields = ('fc', 'fm',)
+    
 
 
 admin.site.register(Plancha, PlanchaAdmin)
-admin.site.register(Voto)
+admin.site.register(Voto, VotoAdmin)
 admin.site.register(Lista)
 admin.site.register(Puesto)
 admin.site.register(Militante, CustomUserAdmin)

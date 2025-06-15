@@ -259,7 +259,9 @@ def resultado(request):
         fecha=request.user.location.fecha
 
         # curules=Puesto.objects.filter(dpto_name=departamento,mun_name=municipio,comuna_name=localidad).first().num_curul
-        curules=Voto.objects.filter(opcion__location=request.user.location).first().opcion.location.num_curul
+        iscurules=Voto.objects.filter(opcion__location=request.user.location).first()
+        if iscurules:
+            curules=iscurules.opcion.location.num_curul
         
     conteo=Voto.objects.filter(
                 opcion__location=request.user.location
@@ -279,21 +281,25 @@ def resultado(request):
     
     militantes_no_votaron=militantes_habilitados.exclude(username__in=lista_sufragio)
 
+    # for m in militantes_no_votaron:
+    #     print('militantes_no_votaron ',m.username)
+    
     # militantes_en_blanco= militantes_en_blanco.exclude()
     print('total_mili_por_ubicion ',total_mili_por_ubicion)
     print('militantes_no_votaron ',militantes_no_votaron.count())
 
     # print('lista_voto ',lista_voto)
-    print('lista_voto ',len(lista_sufragio))
-
-
+    # print('lista_sufragio ',len(lista_sufragio))
     votos_blanco = militantes_no_votaron.count()
     
+    print('lista_sufragio ', total_mili_por_ubicion - militantes_no_votaron.count())
+    
     sum_votos=sum(item['total_votos'] for item in conteo)
+    # sum_votos = total_mili_por_ubicion - militantes_no_votaron.count()
     total_votos_validos=sum_votos + votos_blanco
     cociente_electoral=total_votos_validos / curules
     
-    
+    print(f"sum_votos: {sum_votos}")
     print(f"Total de votos: {total_votos_validos}")
     print(f"Votos blanco: {votos_blanco}")
     print(f"Curules: {curules}")
@@ -398,7 +404,8 @@ def resultado(request):
         'labels': labels,
         'valores': valores,
         'datos': conteo,
-        'total_votos':total_votos_validos,
+        'total_votos':sum_votos,
+        'total_votos_validos':total_votos_validos,
         'departamento':departamento,
         'municipio':municipio,
         'localidad':localidad,

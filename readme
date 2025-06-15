@@ -498,8 +498,223 @@ voto = Voto.objects.create(user=mili, opcion= plancha2)
 
 
 
+exit()
+
+
+
+python manage.py shell
+from asamblea.models import Voto, Plancha
+plancha2 = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '1049629007')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+exit()
+
+
+
+python manage.py shell
+from asamblea.models import Voto, Plancha
+plancha2 = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '10496290046')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290047')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290080')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290081')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290082')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '10496290083')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+mili = Militante.objects.get(username = '')
+voto = Voto.objects.create(user=mili, opcion= plancha2)
+
+
+
+
+
+
+10496290084
+10496290085
+10496290086
+10496290087
+10496290088
+10496290089
+10496290090
+
+
 
 exit()
+
+
+
+
+
+python manage.py shell
+from asamblea.models import Voto, Plancha
+plancha = Plancha.objects.get(id=2)
+mili = Militante.objects.get(username = '10496290021')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290022')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290023')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290024')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290025')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290026')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290027')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290028')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290029')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290030')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290031')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290032')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290033')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290034')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290035')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290036')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290037')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290038')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290039')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290040')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290041')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290042')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290043')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290044')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290045')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290046')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290047')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290050')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290051')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290052')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+
+
+plancha = Plancha.objects.get(id=1)
+mili = Militante.objects.get(username = '10496290053')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290054')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290055')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290056')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290057')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290058')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290059')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '1049629006')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290060')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290061')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290062')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290063')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290064')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290065')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290066')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290067')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290068')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290069')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '1049629007')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290070')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290071')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290072')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290073')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290074')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290075')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+
+
+# votos en blanco
+
+mili = Militante.objects.get(username = '10496290076')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+mili = Militante.objects.get(username = '10496290077')
+voto = Voto.objects.create(user=mili, opcion= plancha)
+
+# no habilitados
+
+mili = Militante.objects.get(username = '10496290078')
+mili = Militante.objects.get(username = '10496290079')
+mili = Militante.objects.get(username = '10496290080')
+mili = Militante.objects.get(username = '10496290081')
+mili = Militante.objects.get(username = '10496290082')
+mili = Militante.objects.get(username = '10496290083')
+mili = Militante.objects.get(username = '10496290084')
+mili = Militante.objects.get(username = '10496290085')
+mili = Militante.objects.get(username = '10496290086')
+mili = Militante.objects.get(username = '10496290087')
+mili = Militante.objects.get(username = '10496290088')
+mili = Militante.objects.get(username = '10496290089')
+mili = Militante.objects.get(username = '10496290090')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 python manage.py shell
