@@ -101,7 +101,7 @@ def enviar_email_activacion(user):
         text_content = f"Hola {user.username}, activa tu cuenta en el siguiente enlace: {activate_url}"
 
         email = EmailMultiAlternatives(
-            subject="Activa tu cuenta",
+            subject="Activación cuenta Asambleas CMJ / CLJ",
             body=text_content,
             from_email=settings.EMAIL_HOST_USER,
             to=[user.email]
