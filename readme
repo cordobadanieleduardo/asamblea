@@ -355,8 +355,15 @@ voto = Voto.objects.create(user=mili, opcion= plancha)
 exit()
 
 
-
+1007717602
 python manage.py shell
+from asamblea.models import Militante, Plancha, Puesto
+puesto = Puesto.objects.get(id=1)
+usuario = Militante.objects.create_user(username="1007717602", email="tutores@partidoverde.org.co", password="1007717602",  location= puesto )
+
+
+
+
 from asamblea.models import Militante, Plancha, Puesto
 puesto = Puesto.objects.get(id=1)
 usuario = Militante.objects.create_user(username="10496290050", email="10496290050@partidoverde.org.co", password="10496290021",  location= puesto )

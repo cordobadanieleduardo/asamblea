@@ -2,11 +2,35 @@
 {% block background %} {% load static %} {% static 'base/img/background/home_background.png' %} {% endblock %}
 {% block page_content %}
 <div class="container-fluid">
+
+  <!-- <p id="timer">00:30</p> -->
+  <p></p>
   {% if not isVoto %}
   <a class="btn btn-primary btn-lg" href="/votar"> Votar</a>
   {% else %}
   <br>
   <a class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
   {% endif %}
+  
 </div>
+
+<script>
+
+  let seconds = 30;
+  let minutes = 0;
+
+  function updateCountdown() {
+    if (seconds > 0) {
+      seconds--;
+     // document.getElementById("timer").innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+ 
+      document.getElementById("timer").innerText = `00:${seconds.toString().padStart(2, '0')}`;
+    } else {
+      alert("Tiempo terminado!");
+      
+    }
+  }
+
+  // setInterval(updateCountdown, 1000);
+</script>
 {% endblock %}

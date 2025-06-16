@@ -5,7 +5,7 @@ from bases.models import ClaseModelo
 
 
 class Puesto(models.Model):
-    comuna_name = models.CharField(max_length=30, verbose_name='Localidad')
+    comuna_name = models.CharField(max_length=30, verbose_name='Localidad',null=True, blank=True)
     mun_name = models.CharField(max_length=30, verbose_name='Municipio')
     dpto_name = models.CharField(max_length=30, verbose_name='Departamento')
     curulCHOICES=((8,"8"), (14,"14"),(17,"17"),)
