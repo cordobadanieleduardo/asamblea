@@ -99,12 +99,12 @@ class CustomUserAdmin(BaseUserAdmin):
 class PlanchaAdmin(admin.ModelAdmin):
     list_display =  ('name','location', 'mostrar', 'fc',)
     readonly_fields = ('fc', 'fm',)
+    list_filter = ( 'location','mostrar',) 
     
 class VotoAdmin(admin.ModelAdmin):
     model = Voto
     list_display =  ('user__username','opcion',)
     list_filter = ( 'opcion',) 
-    # readonly_fields = ('fc', 'fm',)
     
 
 

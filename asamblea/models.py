@@ -78,6 +78,12 @@ class Militante(AbstractUser):
             models.UniqueConstraint(fields=['username','email'],name='unique_username_email')
         ]
 
+    def save(self):
+        self.email = str(self.email.lower()).strip()
+        self.first_name = str(self.first_name).strip()
+        self.last_name = str(self.last_name).strip()        
+        return super(Militante, self).save()
+    
     def __str__(self):
         return f"{self.username} - {self.email}"
 

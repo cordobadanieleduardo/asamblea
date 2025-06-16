@@ -11,10 +11,8 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.db.models import Count
+from django.db.models import F, Count, FloatField, ExpressionWrapper, Case, When, Value, IntegerField,Func
 from collections import defaultdict
-from django.db.models import Case, When, Value, IntegerField
-
 
 from django.template import loader
 import csv
@@ -229,13 +227,6 @@ def votar(request):
                     'localidad':localidad,
                     'mostrarBotonVotar':mostrarBotonVotar,
                    })
-
-from django.db.models import F
-from django.db.models import Count, FloatField, ExpressionWrapper
-import math
-from decimal import Decimal
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Func
-
 
 @login_required
 def resultado(request):
