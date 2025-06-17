@@ -227,6 +227,8 @@ def votar(request):
                     'localidad':localidad,
                     'mostrarBotonVotar':mostrarBotonVotar,
                    })
+    
+from decimal import Decimal, ROUND_HALF_UP
 
 @login_required
 def resultado(request):
@@ -295,8 +297,13 @@ def resultado(request):
     sum_votos=(sum(item['total_votos'] for item in conteo)) - votos_blanco
     # sum_votos = total_mili_por_ubicion - militantes_no_votaron.count()
     total_votos_validos=sum_votos + votos_blanco
-    cociente_electoral=total_votos_validos / curules
+    # cociente_electoral= round(total_votos_validos / curules,2)
+    cociente_electoral= Decimal(str(total_votos_validos / curules))
+    redondeado = cociente_electoral.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    # print(redondeado)  # 1543.68
+    cociente_electoral = redondeado
     
+    print(f"cociente_electoral: {cociente_electoral}")
     print(f"sum_votos: {sum_votos}")
     print(f"Total de votos: {total_votos_validos}")
     print(f"Votos blanco: {votos_blanco}")
@@ -308,9 +315,13 @@ def resultado(request):
         residuo=ExpressionWrapper(F('total_votos') / cociente_electoral - Func(F('total_votos') / cociente_electoral, function='FLOOR'), output_field=FloatField())  # Corrección aquí
     ).order_by('-total_votos')
  
+    # # Truncar el cociente antes de enviarlo al template
+    # for item in conteo:
+    #     item['cociente'] = int(item['cociente'])
+
     # Truncar el cociente antes de enviarlo al template
     for item in conteo:
-        item['cociente'] = int(item['cociente'])
+        item['cociente'] = (item['cociente'])
 
     datos=(conteo)
     # print(conteo)
