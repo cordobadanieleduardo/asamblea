@@ -287,8 +287,8 @@ def resultado(request):
         if c['opcion__name'] == 'Voto en blanco':
             votos_blanco = votos_blanco+ c['total_votos']
 
-    print(conteo)
-    print('votos_blanco', votos_blanco)
+    # print(conteo)
+    # print('votos_blanco', votos_blanco)
 
     # print('lista_sufragio ', total_mili_por_ubicion - militantes_no_votaron.count())
     
