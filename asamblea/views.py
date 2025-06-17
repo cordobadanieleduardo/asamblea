@@ -316,12 +316,8 @@ def resultado(request):
     ).order_by('-total_votos')
  
     # # Truncar el cociente antes de enviarlo al template
-    # for item in conteo:
-    #     item['cociente'] = int(item['cociente'])
-
-    # Truncar el cociente antes de enviarlo al template
     for item in conteo:
-        item['cociente'] = (item['cociente'])
+        item['cociente'] = int(item['cociente'])
 
     datos=(conteo)
     # print(conteo)
