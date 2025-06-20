@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from bases.models import ClaseModelo
+from django.utils import timezone
+from pytz import timezone as pytz_timezone
 
 
 class Puesto(models.Model):
@@ -11,7 +13,9 @@ class Puesto(models.Model):
     curulCHOICES=((8,"8"), (14,"14"),(17,"17"),)
     num_curul=models.IntegerField(default=8,choices=curulCHOICES,verbose_name='¿N° Curules?')
     fecha = models.DateTimeField(verbose_name='F. votación',null=True, blank=True)
-
+    fecha_inicio = models.DateTimeField(verbose_name='Fecha de inicio',null=True, blank=True)
+    fecha_fin = models.DateTimeField(verbose_name='Fecha cierre',null=True, blank=True)
+    
     class Meta:
         verbose_name="Puesto"
         verbose_name_plural="Puestos"
@@ -45,7 +49,7 @@ class Plancha(ClaseModelo):
         ordering=['name']
 
     def __str__(self):
-        return f"{self.name} {self.location.dpto_name} {self.location.mun_name} {self.location.comuna_name}"
+        return f"{self.name} {self.location if self.location else 'No registra' } "
 
 class Voto(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

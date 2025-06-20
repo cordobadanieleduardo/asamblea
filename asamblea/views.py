@@ -148,10 +148,23 @@ def subir_csv(request):
 
 @login_required
 def votar(request):
+    
+    # Verificar si el tiempo acabó no debe dejar votar
+    if l:=request.user.location:            
+        if p:=Puesto.objects.filter(pk= l.pk).first() :
+            print('Puesto ', p)           
+            fecha_final = p.fecha_fin.astimezone(timezone.get_current_timezone())
+            fecha_actual = timezone.now().astimezone(timezone.get_current_timezone())
+            if fecha_actual > fecha_final:
+                return HttpResponseRedirect(reverse('asamblea:resultado'))
+
     # Verificar si el usuario ya votó
     if Voto.objects.filter(user=request.user).exists():
         # return HttpResponse("Ya has votado.")
         return HttpResponseRedirect(reverse('asamblea:resultado'))
+
+
+
 
     # print('user', request.user.location)
     # opciones=Plancha.objects.filter(

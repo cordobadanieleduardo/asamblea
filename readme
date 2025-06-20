@@ -771,3 +771,8 @@ Si hiciste git pull --force o git reset --hard origin/main, sobrescribiste tus a
 - Si perdiste cambios locales, revisa git stash list o git reflog para intentar recuperarlos.
 - Si necesitas sobrescribir archivos sin perder commits, usa git fetch --all seguido de git reset --hard origin/main.
 - Si hubo conflictos, intenta git merge --abort o git checkout -- <archivo> para restaurar archivos específicos.
+
+
+
+
+python -X utf8 manage.py shell < insert_2_shell_militantes.py

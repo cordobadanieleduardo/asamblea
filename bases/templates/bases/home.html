@@ -1,36 +1,81 @@
 {% extends 'base/base.html' %}
 {% block background %} {% load static %} {% static 'base/img/background/home_background.png' %} {% endblock %}
 {% block page_content %}
+
+
+
+
 <div class="container-fluid">
 
-  <!-- <p id="timer">00:30</p> -->
-  <p></p>
-  {% if not isVoto %}
-  <a class="btn btn-primary btn-lg" href="/votar"> Votar</a>
-  {% else %}
-  <br>
-  <a class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Lugar</th>
+        <th scope="col">Inicio</th>
+        <th scope="col">Fin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{{location}}</th>
+        <td>{{fecha_inicio}}</td>
+        <td>{{fecha_fin}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  {% if not isVoto and not isTiempo%}
+  <a class="btn btn-primary mt-3 btn-lg" href="/votar" id="btn-votar"> Votar</a>
   {% endif %}
-  
+
+  {% if isVoto and isTiempo %}
+
+  <a class="btn btn-success mt-3 btn-lg" href="/resultado"> Resultados </a>
+
+  {% endif %}
+
+  {% if mostrarmensaje and mensaje %}
+  <div class="alert alert-danger  mt-3" role="alert">
+    {{mensaje}}
+  </div>
+  {% elif mensaje %}
+  <div class="alert alert-warning mt-3" role="alert" id="msm">
+    {{mensaje}}
+  </div>
+  {% endif %}
+
 </div>
 
 <script>
+  let tiempoRestante = {{ total_segundos }}; // Total en segundos
 
-  let seconds = 30;
-  let minutes = 0;
-
-  function updateCountdown() {
-    if (seconds > 0) {
-      seconds--;
-     // document.getElementById("timer").innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
- 
-      document.getElementById("timer").innerText = `00:${seconds.toString().padStart(2, '0')}`;
-    } else {
-      alert("Tiempo terminado!");
-      
+  function actualizarCronometro() {
+    if (tiempoRestante <= 0) {
+      document.getElementById("btn-votar").style.display = "none";
+      document.getElementById("btn-votar").classList.add("disabled");
+      document.getElementById("msm").textContent = "⏰ ¡Tiempo finalizado! por favor actualizar la página (F5)";
+      clearInterval(intervalo);
+      return;
     }
+
+    let horas = Math.floor(tiempoRestante / 3600);
+    let minutos = Math.floor((tiempoRestante % 3600) / 60);
+    let segundos = tiempoRestante % 60;
+
+    const formato =
+      String(horas).padStart(2, '0') + ":" +
+      String(minutos).padStart(2, '0') + ":" +
+      String(segundos).padStart(2, '0');
+
+    document.getElementById("msm").textContent = "Quedan " + formato + " para ejercer su derecho al voto";
+
+    tiempoRestante--;
   }
 
-  // setInterval(updateCountdown, 1000);
+  const intervalo = setInterval(actualizarCronometro, 1000);
+  actualizarCronometro(); // Iniciar inmediatamente
 </script>
+
 {% endblock %}

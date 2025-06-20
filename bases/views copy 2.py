@@ -16,7 +16,14 @@ from django.urls import reverse_lazy, reverse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 import threading
+
+from datetime import datetime
+
 from asamblea.models import Voto, Puesto
+
+
+
+## from .models import *
 
 class MixinFormInvalid:
     def form_invalid(self,form):
@@ -44,6 +51,10 @@ class MustChangePasswordMixin:
                 return redirect('asamblea:password_change_first_login')
         return super().dispatch(request, *args, **kwargs)
 
+# from pytz import timezone as pytz_timezone
+
+
+
 class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
     template_name = 'bases/home.html'
     login_url='bases:login'
@@ -53,8 +64,8 @@ class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
         ya_voto= Voto.objects.filter(user=self.request.user).exists()
         context["isVoto"] = ya_voto
         context["isTiempo"] = False
-        context["mensaje"] = None
-        context["mostrarmensaje"] = True
+
+        print('ya_voto', ya_voto)
        
         if l:=self.request.user.location:            
             if p:=Puesto.objects.filter(pk= l.pk).first() :
@@ -63,56 +74,86 @@ class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
                 context["fecha_inicio"] = p.fecha_inicio
                 context["fecha_fin"] = p.fecha_fin
                 
+
+                # # Fecha almacenada o proporcionada
+                # inicio = p.fecha_inicio
+                # fin = p.fecha_fin
+                # zona_local = pytz_timezone("America/Bogota")
+
+                # fecha_iniciar_naive = datetime(p.fecha_inicio.year, p.fecha_inicio.month, p.fecha_inicio.day,hour= int(p.fecha_inicio.hour),minute=int(p.fecha_inicio.minute), tzinfo=pytz.utc)
+                # fecha_final_naive = datetime(p.fecha_fin.year, p.fecha_fin.month, p.fecha_fin.day, hour= int(p.fecha_fin.hour), minute= int(p.fecha_fin.minute),tzinfo=pytz.utc)
+
+                # Convertir a "aware" usando la zona actual
+                # zona_local = timezone.get_current_timezone()
+                # zona_local = pytz_timezone("America/Bogota")
+                # fecha_iniciar = timezone.make_aware(fecha_iniciar_naive, zona_local)
+                # fecha_final = timezone.make_aware(fecha_final_naive, zona_local)
+
+
+                # fecha_iniciar = fecha_iniciar_naive.astimezone(timezone.get_current_timezone())
+                # fecha_final = fecha_final_naive.astimezone(timezone.get_current_timezone())
+
+
                 fecha_iniciar = p.fecha_inicio.astimezone(timezone.get_current_timezone())
                 fecha_final = p.fecha_fin.astimezone(timezone.get_current_timezone())
 
+                # # Fecha actual del sistema
+                # f=timezone.now()
+                # fecha_actual_naive = datetime(f.year, f.month, f.day,hour= int(f.hour),minute=int(f.minute),second= int(f.second))
+                # fecha_actual = timezone.make_aware(fecha_actual_naive, zona_local)
+
+                # Mostrar para depurar
+                # print("f",f)
+                # print("inicio",inicio)
+                # print("fin",fin)
+              
+                                    
+
+
+                # zona_bogota = pytz_timezone("America/Bogota")
+
+                # # Convertir un datetime naive a aware con zona Bogotá
+                # fecha_aware = timezone.make_aware(datetime(2025, 6, 19, 12, 12), zona_bogota)
+
                 # Obtener la fecha actual en Bogotá (si estás usando timezone.now, ya respeta settings.py)
                 fecha_actual = timezone.now().astimezone(timezone.get_current_timezone())
-
-                if fecha_iniciar <= fecha_actual <= fecha_final and not ya_voto :
+                
+                
+                    # Comparación
+                if  fecha_iniciar <= fecha_actual <= fecha_final and not ya_voto :
                     context["isVoto"] = False
-                    context["isTiempo"] = False
-                    context["mostrarmensaje"] = False
-                    diferencia = fecha_final - fecha_actual
-
-                    # Obtener la cantidad total de segundos y convertirla a horas, minutos, segundos
-                    total_segundos = int(diferencia.total_seconds())
-
-                    horas = total_segundos // 3600
-                    minutos = (total_segundos % 3600) // 60
-                    segundos = total_segundos % 60
-
-                    # Formatear como %H:%M:%S
-                    formato_duracion = f"{horas:02}:{minutos:02}:{segundos:02}"
-                    # print("Tiempo restante:", formato_duracion)
-                    context["minutos"] = minutos
-                    context["segundos"] = segundos
-                    context["total_segundos"] = total_segundos                    
-                    context["mensaje"] = f"Quedan {formato_duracion} para ejercer su derecho al voto"
-                elif fecha_iniciar >= fecha_actual and not ya_voto:                        
+                    context["isTiempo"] = True
+                    context["mensaje"] = "¡Recuerde que tiene 30 minutos para ejercer su derecho al voto!"
+                elif  fecha_iniciar >= fecha_actual <= fecha_final and not ya_voto :
+                    context["isVoto"] = False
+                    context["isTiempo"] = True
                     context["mensaje"] = "¡No ha empezado la votación!"
-                    context["isVoto"] = False
-                    context["isTiempo"] = True
-                    context["mostrarmensaje"] = False
-                elif fecha_actual>=fecha_final and not ya_voto:
-                    context["mensaje"] = "¡Se terminó el tiempo de votación!"
+                
+                else:
+                    print("Se le acabó el tiempo ",self.request.user )
                     context["isVoto"] = True
-                    context["isTiempo"] = True
-                    context["mostrarmensaje"] = True
-                elif ya_voto and fecha_actual >= fecha_final:
-                    context["mensaje"] = ""
-                    context["mostrarmensaje"] = False
-                    context["isTiempo"] =  True
-                elif ya_voto:
-                    context["mensaje"] = "¡Después de terminar el tiempo de 30 minutos de votación se motrará el botón de resultados!"
-                    context["mostrarmensaje"] = False
-                    context["isTiempo"] =  fecha_actual >= fecha_final
+                    context["isTiempo"] = False
+                    context["mensaje"] = "¡Se terminó el tiempo de votación!"
+
+
+            
+            
+                # print("zona_local",zona_local)
+                # print("inico", p.fecha_inicio)
+                # print("f", p.fecha_fin)
+            
+            
+                # print("fecha_iniciar_naive",fecha_iniciar_naive)
+                # print("fecha_final_naive",fecha_final_naive)
+            
+                print("fecha_iniciar",fecha_iniciar)
+                print("fecha_actual",fecha_actual)
+                print("fecha_final", fecha_final)
+                print("Fecha en Bogotá:", fecha_actual.strftime("%Y-%m-%d %H:%M:%S"))
                 
-                # print("fecha_iniciar",fecha_iniciar)
-                # print("fecha_actual",fecha_actual)
-                # print("fecha_final", fecha_final)                
-                # print("Fecha en Bogotá:", fecha_actual.strftime("%Y-%m-%d %H:%M:%S"))
-                
+                # print('/*/*/*', p.fecha_inicio)
+                               
+
         return context
     
 class HomeSinPrivilegios(LoginRequiredMixin, generic.TemplateView):
