@@ -71,6 +71,38 @@
         <h2>{{departamento}} {{municipio}} {{localidad |default:""}} </h2>
         <h1>Curules: {{curules}}</h1>
         <h1>Cuociente electoral: {{cociente_electoral | floatformat:2 }}</h1>
+        
+        
+        {% comment %} <h2>Planchas</h2> {% endcomment %}
+
+    
+        {% for plancha, miembros in grupo_planchas.items %}
+            <table>
+                <thead>
+                    <tr>
+                        {% comment %} <th scope="col">#</th> {% endcomment %}
+                        <th scope="col">Nombres y Apellidos</th>
+                        <!-- <th scope="col">Usuario</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for miembro in miembros %}
+                    <tr>
+                        {% comment %} <th scope="row">{% if miembro.position > 0 %} {{ miembro.position }}  {% endif %}</th> {% endcomment %}
+                        <td>{% if miembro %} {{ miembro }} {% else %} {{ miembro }} {% endif %} </td>
+                        <!-- <td>{{ miembro.username }}</td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+        {% endfor %}
+
+        
+
+
+        
+        
         <h2>Tabla de Resultados</h2>
         <table>
             <thead>

@@ -380,9 +380,18 @@ def resultado(request):
         if lista and 0 <= 1 < len(lista):  # Se evalúa como True si no está vacía
             # print('Cabeza de lista 2 ',lista[1])
             conformacion_lista.append(lista[1])
-      
-    # print( ' sgunda lista '.strip())
-    # print('lllll', labels[1:])
+
+    grupo_planchas =defaultdict(list)
+    for o in labels:
+        print('o', o)
+        plancha = [ f"{x.position if x.position else '-' } - {x.get_full_name()}" for x in grupos[o]]
+        print('plancha', plancha)
+        for u in plancha:
+            grupo_planchas[o].append(u)
+
+    
+    print('grupo_planchas', grupo_planchas)
+               
     for l in labels[1:]:
         lista = [ x.get_full_name() for x in grupos[l]]        
         # Verificar si existe una posición específica antes de acceder
@@ -432,5 +441,6 @@ def resultado(request):
         'cociente_electoral':cociente_electoral,
         'votos_blanco':votos_blanco,
         'grupos': dict(grupos),
+        'grupo_planchas': dict(grupo_planchas),
         'suma_listas': suma_listas
     })
