@@ -35,10 +35,10 @@ class UsuarioAdminForm(forms.ModelForm):
 # class CustomUserAdmin(admin.ModelAdmin):
 class CustomUserAdmin(BaseUserAdmin):
     model = Militante
-    list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location','sex','plancha','position','list','votos_emitidos',)  # Campos visibles en el listado
+    list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location__dpto_name','location__mun_name','location__comuna_name','sex','plancha','position','list','votos_emitidos',)  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name',)  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
-    list_filter = ('is_staff', 'is_active','plancha','location',)  # Filtros en la barra lateral
+    list_filter = ('is_staff', 'is_active','plancha','location__dpto_name','location__mun_name','location__comuna_name',)  # Filtros en la barra lateral
     actions = ['exportar_excel']
     form = UsuarioAdminForm
     change_list_template = 'admin/importar_vu.html'
@@ -57,7 +57,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'location', 'sex', 'plancha','send_email','must_change_password','position','list',)}
+            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'location__dpto_name','location__mun_name','location__comuna_name', 'sex', 'plancha','send_email','must_change_password','position','list',)}
         ),
     )
     
@@ -81,34 +81,38 @@ class CustomUserAdmin(BaseUserAdmin):
         #     return self.exportar_excel(request)
         return super().changelist_view(request, extra_context)
     
-    def exportar_excel(self, request, queryset):
-        print("exportar_excel")
-        data = list(queryset.values('username', 'email', 'is_active'))
-        df = pd.DataFrame(data)
+    # def exportar_excel(self, request, queryset):
+    #     print("exportar_excel")
+    #     data = list(queryset.values('username', 'email', 'is_active'))
+    #     df = pd.DataFrame(data)
         
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=usuarios.xlsx'
+    #     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    #     response['Content-Disposition'] = 'attachment; filename=usuarios.xlsx'
         
-        df.to_excel(response, index=False)
-        return response
+    #     df.to_excel(response, index=False)
+    #     return response
 
     importar_ventanilla_unica.short_description = "Importar Ventanilla Unica"
     # exportar_excel.short_description = "Exportar a Excel"
 
 
 class PlanchaAdmin(admin.ModelAdmin):
-    list_display =  ('name','location', 'mostrar', 'fc',)
+    model = Plancha
+    list_display =  ('name','location__dpto_name','location__mun_name','location__comuna_name', 'mostrar', 'fc',)
+    search_fields = ('name','location__dpto_name','location__mun_name','location__comuna_name',)  # Campos por los que puedes buscar
     readonly_fields = ('fc', 'fm',)
-    list_filter = ( 'location','mostrar',) 
+    list_filter = ( 'location__dpto_name','location__mun_name','location__comuna_name','mostrar',) 
     
 class VotoAdmin(admin.ModelAdmin):
     model = Voto
-    list_display =  ('user__username','opcion',)
-    list_filter = ('opcion',) 
+    list_display =  ('user__username','opcion__location__dpto_name','opcion__location__mun_name','opcion__location__comuna_name',)
+    search_fields = ('user__username','opcion__location__dpto_name','opcion__location__mun_name','opcion__location__comuna_name',) 
+    list_filter = ('opcion__name','opcion__location__dpto_name','opcion__location__mun_name','opcion__location__comuna_name',) 
     
 class PuestoAdmin(admin.ModelAdmin):
     model = Puesto
     list_display =('comuna_name','mun_name','dpto_name','num_curul','fecha','fecha_inicio','fecha_fin',)
+    search_fields = ('comuna_name','mun_name','dpto_name','num_curul',)
     list_filter =('dpto_name','mun_name','comuna_name','fecha_inicio','fecha_fin',) 
     
 
