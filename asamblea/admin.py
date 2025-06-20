@@ -38,7 +38,7 @@ class CustomUserAdmin(BaseUserAdmin):
     list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location__dpto_name','location__mun_name','location__comuna_name','sex','plancha','position','list','votos_emitidos',)  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name',)  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
-    list_filter = ('is_staff', 'is_active','plancha','location__dpto_name','location__mun_name','location__comuna_name',)  # Filtros en la barra lateral
+    list_filter = ('is_staff', 'is_active', 'location__dpto_name','location__mun_name','location__comuna_name','plancha__name')  # Filtros en la barra lateral
     actions = ['exportar_excel']
     form = UsuarioAdminForm
     change_list_template = 'admin/importar_vu.html'
@@ -57,7 +57,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'location__dpto_name','location__mun_name','location__comuna_name', 'sex', 'plancha','send_email','must_change_password','position','list',)}
+            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'sex', 'plancha','send_email','must_change_password','position','list',)}
         ),
     )
     
