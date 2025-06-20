@@ -149,14 +149,11 @@ def subir_csv(request):
 
 @login_required
 def votar(request):
-    fecha_final= None
-    fecha_actual= None
+    
     # Verificar si el tiempo acabó no debe dejar votar
-    l=request.user.location
-    p=None
-    if l:
-        p=Puesto.objects.filter(pk= l.pk).first()            
-        if p:            
+    if l:=request.user.location:            
+        if p:=Puesto.objects.filter(pk= l.pk).first() :
+            print('Puesto ', p)           
             fecha_final = p.fecha_fin.astimezone(timezone.get_current_timezone())
             fecha_actual = timezone.now().astimezone(timezone.get_current_timezone())
             if fecha_actual > fecha_final:
@@ -230,14 +227,7 @@ def votar(request):
             opcion=None
 
         if opcion:
-            Voto.objects.create(user=request.user, opcion=opcion)            
-            if p:
-                fecha_inicio = p.fecha_inicio.astimezone(timezone.get_current_timezone())            
-                fecha_final = p.fecha_fin.astimezone(timezone.get_current_timezone())
-                fecha_actual = timezone.now().astimezone(timezone.get_current_timezone())
-                if fecha_inicio < fecha_actual <= fecha_final:
-                     # ✅ Redirección a una vista home cuando no se ha hecho cierre de la votación
-                    return HttpResponseRedirect(reverse('bases:home'))                
+            Voto.objects.create(user=request.user, opcion=opcion)
             # ✅ Redirección a una vista de confirmación o resultados
             return HttpResponseRedirect(reverse('asamblea:resultado'))
         
@@ -273,6 +263,7 @@ def resultado(request):
         localidad=request.user.location.comuna_name
         fecha=request.user.location.fecha
 
+        # curules=Puesto.objects.filter(dpto_name=departamento,mun_name=municipio,comuna_name=localidad).first().num_curul
         iscurules=Voto.objects.filter(opcion__location=request.user.location).first()
         if iscurules:
             curules=iscurules.opcion.location.num_curul
@@ -283,12 +274,38 @@ def resultado(request):
             ).annotate(
                 total_votos=Count('id'),                
             ).order_by('-total_votos')
+    # print('conteo ', conteo)
+            
+    # plancha=Plancha.objects.filter(mostrar=True,location=request.user.location).order_by('id')
+    # militantes=Militante.objects.filter(plancha=plancha)
+    # militantes_habilitados=Militante.objects.filter(location=request.user.location,is_staff=False)
+    # total_mili_por_ubicion= militantes_habilitados.count()
+    
 
+    # lista_sufragio = [ x.user.username for x in Voto.objects.filter(opcion__location=request.user.location)]
+    
+    # militantes_no_votaron=militantes_habilitados.exclude(username__in=lista_sufragio)
+
+    # for m in militantes_no_votaron:
+    #     print('militantes_no_votaron ',m.username)
+    
+    # militantes_en_blanco= militantes_en_blanco.exclude()
+    # print('total_mili_por_ubicion ',total_mili_por_ubicion)
+    # print('militantes_no_votaron ',militantes_no_votaron.count())
+
+    # print('lista_voto ',lista_voto)
+    # print('lista_sufragio ',len(lista_sufragio))
+    # votos_blanco = militantes_no_votaron.count()
     votos_blanco = 0
     for c in conteo:
         if c['opcion__name'] == 'Voto en blanco':
             votos_blanco = votos_blanco+ c['total_votos']
 
+    # print(conteo)
+    # print('votos_blanco', votos_blanco)
+
+    # print('lista_sufragio ', total_mili_por_ubicion - militantes_no_votaron.count())
+    
     sum_votos=(sum(item['total_votos'] for item in conteo)) - votos_blanco
     # sum_votos = total_mili_por_ubicion - militantes_no_votaron.count()
     total_votos_validos=sum_votos + votos_blanco
@@ -298,11 +315,11 @@ def resultado(request):
     # print(redondeado)  # 1543.68
     cociente_electoral = redondeado
     
-    # print(f"cociente_electoral: {cociente_electoral}")
-    # print(f"sum_votos: {sum_votos}")
-    # print(f"Total de votos: {total_votos_validos}")
-    # print(f"Votos blanco: {votos_blanco}")
-    # print(f"Curules: {curules}")
+    print(f"cociente_electoral: {cociente_electoral}")
+    print(f"sum_votos: {sum_votos}")
+    print(f"Total de votos: {total_votos_validos}")
+    print(f"Votos blanco: {votos_blanco}")
+    print(f"Curules: {curules}")
 
     conteo = conteo.values('opcion__name').annotate(
         total_votos=Count('id'),
@@ -310,11 +327,13 @@ def resultado(request):
         residuo=ExpressionWrapper(F('total_votos') / cociente_electoral - Func(F('total_votos') / cociente_electoral, function='FLOOR'), output_field=FloatField())  # Corrección aquí
     ).order_by('-total_votos')
  
-    # Truncar el cociente antes de enviarlo al template
+    # # Truncar el cociente antes de enviarlo al template
     for item in conteo:
         item['cociente'] = int(item['cociente'])
 
     datos=(conteo)
+    # print(conteo)
+    # print(conteo.count())
 
     # conformacion de listas 
     
@@ -342,12 +361,17 @@ def resultado(request):
     labels=[d['opcion__name'] for d in datos]
     valores=[d['total_votos'] for d in datos]
     
-    # print('labels',labels)
-    # print('valores',valores)
+    print('labels',labels)
+    print('valores',valores)
+
+    # for key in dict(grupos):
+    #     # print(key, "->", grupos[key])
+    #     print(key)
     
     conformacion_lista=[]
     if(labels and len(labels)>0):
         lista = [ x.get_full_name() for x in grupos[labels[0]]]
+        # print('Lista',lista)
         # Verificar si existe una posición específica antes de acceder
         if lista and 0 <= 0 < len(lista):  # Se evalúa como True si no está vacía
             # print('Cabeza de lista ',lista[0])
@@ -358,34 +382,47 @@ def resultado(request):
 
     grupo_planchas =defaultdict(list)
     for o in labels:
-        # print('o', o)
+        print('o', o)
         plancha = [ f"{x.position if x.position else '-' } - {x.get_full_name()}" for x in grupos[o]]
-        # print('plancha', plancha)
+        print('plancha', plancha)
         for u in plancha:
             grupo_planchas[o].append(u)
+
+    
+    print('grupo_planchas', grupo_planchas)
                
     for l in labels[1:]:
         lista = [ x.get_full_name() for x in grupos[l]]        
         # Verificar si existe una posición específica antes de acceder
         if lista and 0 <= 0 < len(lista):  # Se evalúa como True si no está vacía
             conformacion_lista.append(lista[0])
+
+    # print( ' tercer  '.strip())
     
     lista_uno = []
     if(labels and len(labels)>0 and 0 <= 0 < len(labels)):
         lista_uno = [ x.get_full_name() for x in grupos[labels[0]]]
         lista_uno =  lista_uno[2:]
-        
+        # conformacion_lista.append(lista_uno[0])
+    # print( ' lista uno  '.strip(),  lista_uno)
+    
     lista_dos = []
     if(labels and len(labels)>0 and 0 <= 1 < len(labels)):
         lista_dos = [ x.get_full_name() for x in grupos[labels[1]]]
         lista_dos =  lista_dos[1:]
+        # conformacion_lista.append(lista_dos[0])
 
+    # print( ' lista dos  '.strip(),  lista_dos)
+        
     # Intercalar listas
     lista_intercalada = [item for pair in zip(lista_uno, lista_dos) for item in pair]
 
-    # # # Imprimir posición e ítem
-    # for i, item in enumerate(conformacion_lista + lista_intercalada):
-    #     print(f"Posición {i+1}: {item}")
+    # print('lista_intercalada', lista_intercalada)
+
+    # suma_listas = []
+    # # Imprimir posición e ítem
+    for i, item in enumerate(conformacion_lista + lista_intercalada):
+        print(f"Posición {i+1}: {item}")
 
     suma_listas = [(i+1, item) for i, item in enumerate(conformacion_lista + lista_intercalada)]
     
