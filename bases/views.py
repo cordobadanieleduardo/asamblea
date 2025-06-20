@@ -108,8 +108,8 @@ class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
                     # Obtener la cantidad total de segundos y convertirla a horas, minutos, segundos
                     total_segundos = int(diferencia.total_seconds())
                     minutos = (total_segundos % 3600) // 60
-
-                    context["mensaje"] = f"¡Después de terminar el tiempo de {minutos} minutos de votación se motrará el botón de resultados!"
+                    segundos = total_segundos % 60
+                    context["mensaje"] = f"¡Después de terminar el tiempo de {minutos} minutos: {total_segundos} segundos de votación se motrará el botón de resultados! por favor recargue la página cuando finalice el tiempo"
                     context["mostrarmensaje"] = False
                     context["isTiempo"] =  fecha_actual >= fecha_final
                 
