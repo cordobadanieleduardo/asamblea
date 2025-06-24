@@ -39,9 +39,9 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('username', 'email', 'first_name', 'last_name','location__dpto_name','location__mun_name','location__comuna_name','plancha__name',)  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
     list_filter = ('is_staff', 'is_active', 'location__dpto_name','location__mun_name','location__comuna_name','plancha__name',)  # Filtros en la barra lateral
-    actions = ['exportar_excel']
-    form = UsuarioAdminForm
-    change_list_template = 'admin/importar_vu.html'
+    # actions = ['exportar_excel']
+    # form = UsuarioAdminForm
+    # change_list_template = 'admin/importar_vu.html'
     
     def votos_emitidos(self, obj):
         return Voto.objects.filter(user=obj).count()
@@ -61,25 +61,25 @@ class CustomUserAdmin(BaseUserAdmin):
         ),
     )
     
-    def importar_ventanilla_unica(self, request):
-        print("importar_ventanilla_unica entro")
-        for archivo_excel in request.FILES.getlist('archivo_excel'):
-            # Leer el archivo Excel y obtener los números de identificación
-            data_frame = pd.read_excel(archivo_excel)
-            numeros_identificacion = data_frame['NUMERO_DOCUMENTO'].tolist()
-            # Marcar los usuarios correspondientes como aprobados
-            Militante.objects.filter(username__in=numeros_identificacion).update(is_active=True,)
+    # def importar_ventanilla_unica(self, request):
+    #     print("importar_ventanilla_unica entro")
+    #     for archivo_excel in request.FILES.getlist('archivo_excel'):
+    #         # Leer el archivo Excel y obtener los números de identificación
+    #         data_frame = pd.read_excel(archivo_excel)
+    #         numeros_identificacion = data_frame['NUMERO_DOCUMENTO'].tolist()
+    #         # Marcar los usuarios correspondientes como aprobados
+    #         Militante.objects.filter(username__in=numeros_identificacion).update(is_active=True,)
 
-        self.message_user(request, "Usuarios ventanilla única importados correctamente.")
-        return redirect('/admin/asamblea/militante/')
+    #     self.message_user(request, "Usuarios ventanilla única importados correctamente.")
+    #     return redirect('/admin/asamblea/militante/')
     
-    def changelist_view(self, request, extra_context=None):
-        print("changelist_view")
-        if request.method == 'POST' and request.FILES.get('archivo_excel'):
-            return self.importar_ventanilla_unica(request)
-        # elif request.method == 'POST':
-        #     return self.exportar_excel(request)
-        return super().changelist_view(request, extra_context)
+    # def changelist_view(self, request, extra_context=None):
+    #     print("changelist_view")
+    #     if request.method == 'POST' and request.FILES.get('archivo_excel'):
+    #         return self.importar_ventanilla_unica(request)
+    #     # elif request.method == 'POST':
+    #     #     return self.exportar_excel(request)
+    #     return super().changelist_view(request, extra_context)
     
     # def exportar_excel(self, request, queryset):
     #     print("exportar_excel")
@@ -92,7 +92,7 @@ class CustomUserAdmin(BaseUserAdmin):
     #     df.to_excel(response, index=False)
     #     return response
 
-    importar_ventanilla_unica.short_description = "Importar Ventanilla Unica"
+    # importar_ventanilla_unica.short_description = "Importar Ventanilla Unica"
     # exportar_excel.short_description = "Exportar a Excel"
 
 
