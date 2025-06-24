@@ -35,10 +35,13 @@ class UsuarioAdminForm(forms.ModelForm):
 # class CustomUserAdmin(admin.ModelAdmin):
 class CustomUserAdmin(BaseUserAdmin):
     model = Militante
-    list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location__dpto_name','location__mun_name','location__comuna_name','sex','plancha','position','list','votos_emitidos',)  # Campos visibles en el listado
+    list_display =  BaseUserAdmin.list_display + ('is_active','send_email','must_change_password','location__dpto_name','location__mun_name','location__comuna_name','sex','plancha','position','votos_emitidos',)  # Campos visibles en el listado
     search_fields = ('username', 'email', 'first_name', 'last_name','location__dpto_name','location__mun_name','location__comuna_name','plancha__name',)  # Campos por los que puedes buscar
     ordering = ('username',)  # Ordenar por nombre de usuario
     list_filter = ('is_staff', 'is_active', 'location__dpto_name','location__mun_name','location__comuna_name','plancha__name',)  # Filtros en la barra lateral
+    autocomplete_fields = ['plancha','location']
+    readonly_fields = ('username', 'email','is_staff','is_active','send_email','must_change_password','groups', 'user_permissions',)
+    
     # actions = ['exportar_excel']
     # form = UsuarioAdminForm
     # change_list_template = 'admin/importar_vu.html'
@@ -49,7 +52,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
-        ('Atributos', {'fields': ('plancha','send_email','must_change_password','position','list',)}),
+        ('Atributos', {'fields': ('plancha','position','send_email','must_change_password',)}),
         ('Información Personal', {'fields': ('first_name', 'last_name','location','sex',)}),
         ('Permisos', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
     )
@@ -57,7 +60,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'sex', 'plancha','send_email','must_change_password','position','list',)}
+            'fields': ('is_staff','is_active','username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'sex', 'plancha','send_email','must_change_password','position',)}
         ),
     )
     
@@ -100,8 +103,9 @@ class PlanchaAdmin(admin.ModelAdmin):
     model = Plancha
     list_display =  ('name','location__dpto_name','location__mun_name','location__comuna_name', 'mostrar', 'fc',)
     search_fields = ('name','location__dpto_name','location__mun_name','location__comuna_name',)  # Campos por los que puedes buscar
-    readonly_fields = ('fc', 'fm',)
+    readonly_fields = ('fc', 'fm','fecha_inicio','fecha_fin')
     list_filter = ( 'location__dpto_name','location__mun_name','location__comuna_name','mostrar',) 
+    autocomplete_fields = ('location',)
     
 class VotoAdmin(admin.ModelAdmin):
     model = Voto
@@ -118,7 +122,7 @@ class PuestoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Plancha, PlanchaAdmin)
-admin.site.register(Voto, VotoAdmin)
+# admin.site.register(Voto, VotoAdmin)
 # admin.site.register(Lista)
 admin.site.register(Puesto,PuestoAdmin)
 admin.site.register(Militante, CustomUserAdmin)

@@ -63,8 +63,8 @@ class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
                 context["fecha_inicio"] = p.fecha_inicio
                 context["fecha_fin"] = p.fecha_fin
                 
-                fecha_iniciar = p.fecha_inicio.astimezone(timezone.get_current_timezone())
-                fecha_final = p.fecha_fin.astimezone(timezone.get_current_timezone())
+                fecha_iniciar=(p.fecha_inicio.astimezone(timezone.get_current_timezone()) if p.fecha_inicio else timezone.now())
+                fecha_final=(p.fecha_fin.astimezone(timezone.get_current_timezone()) if p.fecha_fin else timezone.now())
 
                 # Obtener la fecha actual en Bogotá (si estás usando timezone.now, ya respeta settings.py)
                 fecha_actual = timezone.now().astimezone(timezone.get_current_timezone())
@@ -109,7 +109,7 @@ class Home(LoginRequiredMixin, MustChangePasswordMixin, generic.TemplateView):
                     total_segundos = int(diferencia.total_seconds())
                     minutos = (total_segundos % 3600) // 60
                     segundos = total_segundos % 60
-                    context["mensaje"] = f"¡Después de terminar el tiempo de {minutos} minutos: {total_segundos} segundos de votación se motrará el botón de resultados! por favor recargue la página cuando finalice el tiempo"
+                    context["mensaje"] = f"¡Después de terminar el tiempo de {minutos} minutos: {segundos} segundos de votación se motrará el botón de resultados! por favor recargue la página cuando finalice el tiempo"
                     context["mostrarmensaje"] = False
                     context["isTiempo"] =  fecha_actual >= fecha_final
                 
@@ -129,7 +129,6 @@ def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print('username ',username, 'password ',password )
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if not user.is_active:                
