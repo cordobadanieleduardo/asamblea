@@ -1,10 +1,7 @@
-from django.http import HttpResponse
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-# from django.contrib.auth.models import User
-from django.shortcuts import redirect
 import pandas as pd
-from .models import Militante, Plancha , Voto, Lista, Puesto
+from .models import Militante, Plancha , Voto, Puesto
 from django import forms
 
 
@@ -40,7 +37,7 @@ class CustomUserAdmin(BaseUserAdmin):
     ordering = ('username',)  # Ordenar por nombre de usuario
     list_filter = ('is_staff', 'is_active', 'location__dpto_name','location__mun_name','location__comuna_name','plancha__name',)  # Filtros en la barra lateral
     autocomplete_fields = ['plancha','location']
-    readonly_fields = ('username', 'email','is_staff','is_active','send_email','must_change_password','groups', 'user_permissions',)
+    readonly_fields = ('username','is_staff','is_active','send_email','must_change_password','groups', 'user_permissions',)
     
     # actions = ['exportar_excel']
     # form = UsuarioAdminForm
