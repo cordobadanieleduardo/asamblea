@@ -151,3 +151,4 @@ dmypy.json
 db.sqlite3
 *.xlsx
 *.csv
+importar_militantes.py
